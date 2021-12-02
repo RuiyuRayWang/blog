@@ -111,21 +111,62 @@ To ensure that R is available on the default system `PATH` variable, create symb
 sudo ln -s /opt/R/${R_VERSION}/bin/R /usr/local/bin/R
 sudo ln -s /opt/R/${R_VERSION}/bin/Rscript /usr/local/bin/Rscript
 ```
-This step only applies to the first installation of R on a given system. For subsequent installations, this section should be skipped.
+
+Next, install multiple versions of R. Repeat the steps to specify, download, and install a different version of R alongside existing versions.
+I did this `export R_VERSION=3.6.3` and executed the steps above to have R-3.6.3 installed.
+
+### Switching between R versions
+
+The tutorial has a note at the symlink step saying:
+>This step only applies to the first installation of R on a given system. For subsequent installations, this section should be skipped.
+
+I suspect that overriding the symlink with later installed R versions would allow switching between different R versions. So I did:
+```
+sudo rm /usr/local/bin/R /usr/local/bin/Rscript
+sudo ln -s /opt/R/3.6.3/bin/R /usr/local/bin/R  # ${R_VERSION}=3.6.3
+sudo ln -s /opt/R/3.6.3/bin/Rscript /usr/local/bin/Rscript
+```
+
+After doing this, R indeed switched to my desired version.
+```
+$ which R
+/usr/local/bin/R
+$ file /usr/local/bin/R
+/usr/local/bin/R: symbolic link to /opt/R/3.6.3/bin/R
+$ R --version
+R version 3.6.3 (2020-02-29) -- "Holding the Windsock"
+Copyright (C) 2020 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+```
+
+Another way of switching between different R versions is to get `Rstudio` recognize different R builts.
+Referring to this post: [Changing R versions for the RStudio Desktop IDE](https://support.rstudio.com/hc/en-us/articles/200486138-Changing-R-versions-for-the-RStudio-Desktop-IDE), we know that on Linux systems, `Rstudio` use the version of R pointed to by the output of `which R`. 
+
+To override which version of R is used, we can set `RSTUDIO_WHICH_R` environment variable to the R executable that we want to run against. For example, in terminal:
+```
+$ export RSTUDIO_WHICH_R=/opt/R/3.6.3/bin/R
+```
+And within the same terminal, launch Rstudio by typing:
+```
+$ rstudio
+```
+
+Because the `RSTUDIO_WHICH_R` is only available in a given shell, calling `rstudio` in a new terminal will still point to the default R executable. In our case this is `/usr/local/bin/R`, which ,by default, points to `/opt/R/4.0.5/bin/R`.
+
+Now we can happily work with multiple R versions. It's time to build R packages. Hopefully `cellassign` can be run properly this time.
+
+`cellassign` depends on tensorflow which is another nasty built experience. I'll write about it next time.
 
 
-To install multiple versions of R, repeat these steps to specify, download, and install a different version of R alongside existing versions.
-
-
-
-
-
-
-[System Dependency Detection](https://docs.rstudio.com/rspm/admin/appendix/system-dependency-detection/)
+Other useful resources:
 
 [**Installing multiple versions of R on Linux**](https://support.rstudio.com/hc/en-us/articles/215488098-Installing-multiple-versions-of-R-on-Linux)*
 
 [Using multiple versions of R with RStudio Workbench / RStudio Server Pro](https://support.rstudio.com/hc/en-us/articles/212364537-Using-multiple-versions-of-R-with-RStudio-Workbench-RStudio-Server-Pro)
 
-[Changing R versions for the RStudio Desktop IDE](https://support.rstudio.com/hc/en-us/articles/200486138-Changing-R-versions-for-the-RStudio-Desktop-IDE)
+[System Dependency Detection](https://docs.rstudio.com/rspm/admin/appendix/system-dependency-detection/)
+
+
+
+
 
