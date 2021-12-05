@@ -114,39 +114,43 @@ sudo ln -s /opt/R/${R_VERSION}/bin/Rscript /usr/local/bin/Rscript
 ```
 
 Next, time to install multiple versions of R. Repeat the above steps to specify, download, and install a different version of R alongside existing versions.
-I re-configured with `export R_VERSION=3.6.3` and executed the steps above to have R-3.6.3 installed.
+I re-configured with `export R_VERSION=3.6.2` and executed the steps above to have R-3.6.2 installed.
 
 ### Switching between R versions
+
+#### Method 1
 
 The tutorial has a note at the symlink step, saying:
 >This step only applies to the first installation of R on a given system. For subsequent installations, this section should be skipped.
 
 I suspect that overriding the symlink with later installed R versions would allow switching between different R versions. So I did:
 ```
-$ export R_VERSION=3.6.3
+$ export R_VERSION=3.6.2
 $ sudo rm /usr/local/bin/R /usr/local/bin/Rscript
-$ sudo ln -s /opt/R/${R_VERSION}/bin/R /usr/local/bin/R  # ${R_VERSION}=3.6.3
+$ sudo ln -s /opt/R/${R_VERSION}/bin/R /usr/local/bin/R  # ${R_VERSION}=3.6.2
 $ sudo ln -s /opt/R/${R_VERSION}/bin/Rscript /usr/local/bin/Rscript
 ```
 
-After doing this, R indeed switched to 3.6.3, which is my desired version.
+After doing this, R indeed switched to 3.6.2, which is my desired version.
 ```
 $ which R
 /usr/local/bin/R
 $ file /usr/local/bin/R
-/usr/local/bin/R: symbolic link to /opt/R/3.6.3/bin/R
+/usr/local/bin/R: symbolic link to /opt/R/3.6.2/bin/R
 $ R --version
-R version 3.6.3 (2020-02-29) -- "Holding the Windsock"
+R version 3.6.2 (2020-02-29) -- "Holding the Windsock"
 Copyright (C) 2020 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 ```
+
+#### Method 2
 
 Another way of switching between different R versions is to get `Rstudio` recognize different R executables.
 Referring to this post: [Changing R versions for the RStudio Desktop IDE](https://support.rstudio.com/hc/en-us/articles/200486138-Changing-R-versions-for-the-RStudio-Desktop-IDE), we know that on Linux systems, `Rstudio` use the version of R pointed to by the output of `which R`. 
 
 To override which version of R is used, we set `RSTUDIO_WHICH_R` environment variable to the R executable that we want to run against. For example, in terminal:
 ```
-$ export RSTUDIO_WHICH_R=/opt/R/3.6.3/bin/R
+$ export RSTUDIO_WHICH_R=/opt/R/3.6.2/bin/R
 ```
 And within the same terminal, launch Rstudio by typing:
 ```
@@ -159,6 +163,13 @@ Now that we can work with multiple R versions, it's time to build some R package
 
 `cellassign` depends on tensorflow which is another nasty built experience. I'll write about it next time.
 
+## #2021.12.3 Updates:
+
+Previously in this post I installed R-3.6.3. Now this is discouraged. For configuration of `cellassign`, build `R-3.6.2` instead of `R-3.6.3`, because some of the package dependencies (`RcppAnnoy`) has [bad compatibility with `R-3.6.3`](https://github.com/LTLA/BiocNeighbors/issues/17).
+
+It turns out that `cellassign` still fails after reverting to R-3.6.3!
+
+The error encountered with `cellassign` turns out to be a compatibility issue of R `tensorflow`. To avoid the error, build R `tensorflow` with `devtools` and explicitly specify a version. See this [issue](https://github.com/Irrationone/cellassign/issues/94).
 
 Other useful resources:
 

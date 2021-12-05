@@ -19,5 +19,8 @@ Softwares used in works. Some require built from scratch.
 
 
 ## Ubuntu
-
+1. Bioinformatics
+    - samtools
+    - STAR
+    - umi_tools
 
