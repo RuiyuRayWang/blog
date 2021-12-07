@@ -1,5 +1,5 @@
 ---
-title:       "Clean Built of Multiple R Versions on Linux"
+title:       "Clean Built of Multiple R Versions on Ubuntu"
 subtitle:    ""
 description: ""
 date:        2021-12-02T19:54:09+08:00
@@ -163,9 +163,9 @@ Now that we can work with multiple R versions, it's time to build some R package
 
 `cellassign` depends on tensorflow which is another nasty built experience. I'll write about it next time.
 
-## #2021.12.3 Updates:
+### 2021.12.3 Updates:
 
-Previously in this post I installed R-3.6.3. Now this is discouraged. For configuration of `cellassign`, build `R-3.6.2` instead of `R-3.6.3`, because some of the package dependencies (`RcppAnnoy`) has [bad compatibility with `R-3.6.3`](https://github.com/LTLA/BiocNeighbors/issues/17).
+Previously in this post I installed R-3.6.3. Now I strongly discourage this practice. For configuration of `cellassign`, build `R-3.6.2` instead of `R-3.6.3`, because some of the package dependencies (`RcppAnnoy`) has [bad compatibility with `R-3.6.3`](https://github.com/LTLA/BiocNeighbors/issues/17).
 
 It turns out that `cellassign` still fails after reverting to R-3.6.3!
 
