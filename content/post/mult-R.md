@@ -9,7 +9,7 @@ tags:        ["R", "Rstudio", "Ubuntu"]
 categories:  ["Tech" ]
 ---
 
-Long time ago I built R-4.0.3 on Ubuntu system by following these guides: [link1](https://www.digitalocean.com/community/tutorials/how-to-install-r-on-ubuntu-18-04-quickstart), [link2](https://cran.r-project.org/bin/linux/ubuntu/). Briefly, I added GPG Key to APT (Advanced Package Tool) and added `CRAN` repository and directly retrieved R by `apt`.
+Long time ago I built R-4.0.3 on Ubuntu system following these guides: [link1](https://www.digitalocean.com/community/tutorials/how-to-install-r-on-ubuntu-18-04-quickstart), [link2](https://cran.r-project.org/bin/linux/ubuntu/). Briefly, I added GPG Key to APT (Advanced Package Tool) and added `CRAN` repository and directly retrieved R by `apt`.
 ```
 $ sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
 $ sudo add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran40/'
@@ -21,7 +21,7 @@ Recently, I ran into an issue with [`cellassign`](https://github.com/Irrationone
 
 Plus, the GPG key added earlier is raising errors everytime I invoke `sudo apt update`, which is quite annoying. So I figured it might be better to build R from source.
 
-### Uninstall previously built R versions
+## Uninstall previously built R versions
 
 First check GPG Keys added by previous R built and remove it.
 ```
@@ -80,7 +80,7 @@ Command 'R' not found, but can be installed with:
 sudo apt install r-base-core
 ```
 
-### Install R from precompiled binaries
+## Install R from precompiled binaries
 
 I will use the method listed in this page for installation of R:
 [**Install R**](https://docs.rstudio.com/resources/install-r/)*
@@ -116,9 +116,9 @@ sudo ln -s /opt/R/${R_VERSION}/bin/Rscript /usr/local/bin/Rscript
 Next, time to install multiple versions of R. Repeat the above steps to specify, download, and install a different version of R alongside existing versions.
 I re-configured with `export R_VERSION=3.6.2` and executed the steps above to have R-3.6.2 installed.
 
-### Switching between R versions
+## Switching between R versions
 
-#### Method 1
+### Method 1
 
 The tutorial has a note at the symlink step, saying:
 >This step only applies to the first installation of R on a given system. For subsequent installations, this section should be skipped.
@@ -143,7 +143,7 @@ Copyright (C) 2020 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 ```
 
-#### Method 2
+### Method 2
 
 Another way of switching between different R versions is to get `Rstudio` recognize different R executables.
 Referring to this post: [Changing R versions for the RStudio Desktop IDE](https://support.rstudio.com/hc/en-us/articles/200486138-Changing-R-versions-for-the-RStudio-Desktop-IDE), we know that on Linux systems, `Rstudio` use the version of R pointed to by the output of `which R`. 
@@ -163,7 +163,7 @@ Now that we can work with multiple R versions, it's time to build some R package
 
 `cellassign` depends on tensorflow which is another nasty built experience. I'll write about it next time.
 
-### 2021.12.3 Updates:
+## 2021.12.3 Updates:
 
 Previously in this post I installed R-3.6.3. Now I strongly discourage this practice. For configuration of `cellassign`, build `R-3.6.2` instead of `R-3.6.3`, because some of the package dependencies (`RcppAnnoy`) has [bad compatibility with `R-3.6.3`](https://github.com/LTLA/BiocNeighbors/issues/17).
 
@@ -171,7 +171,7 @@ It turns out that `cellassign` still fails after reverting to R-3.6.3!
 
 The error encountered with `cellassign` turns out to be a compatibility issue of R `tensorflow`. To avoid the error, build R `tensorflow` with `devtools` and explicitly specify a version. See this [issue](https://github.com/Irrationone/cellassign/issues/94).
 
-Other useful resources:
+### Other useful readings while working on this problem:
 
 [**Installing multiple versions of R on Linux**](https://support.rstudio.com/hc/en-us/articles/215488098-Installing-multiple-versions-of-R-on-Linux)*
 
