@@ -171,9 +171,13 @@ It turns out that `cellassign` still fails after reverting to R-3.6.3!
 
 The error encountered with `cellassign` turns out to be a compatibility issue of R `tensorflow`. To avoid the error, build R `tensorflow` with `devtools` and explicitly specify a version. See this [issue](https://github.com/Irrationone/cellassign/issues/94).
 
-### Other useful readings while working on this problem:
+## References:
+
+[**Install R**](https://docs.rstudio.com/resources/install-r/)*
 
 [**Installing multiple versions of R on Linux**](https://support.rstudio.com/hc/en-us/articles/215488098-Installing-multiple-versions-of-R-on-Linux)*
+
+[R Installation and Administration](https://cran.r-project.org/doc/manuals/r-release/R-admin.html)
 
 [Using multiple versions of R with RStudio Workbench / RStudio Server Pro](https://support.rstudio.com/hc/en-us/articles/212364537-Using-multiple-versions-of-R-with-RStudio-Workbench-RStudio-Server-Pro)
 
