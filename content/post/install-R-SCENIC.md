@@ -117,3 +117,13 @@ Next job is to import `pySCENIC` results to R `SCENIC`, consult the followings:
 
     - [Github issue discussion](https://github.com/aertslab/pySCENIC/issues/180)
     - [Vignette](https://rawcdn.githack.com/aertslab/SCENIC/0a4c96ed8d930edd8868f07428090f9dae264705/inst/doc/importing_pySCENIC.html)
+
+## P.S.
+
+When trying to push this post to github remote, failed again...
+```
+$ git push -u --all
+fatal: unable to access 'https://github.com/RuiyuRayWang/blog.git/': Could not resolve host: github.com
+```
+
+Looks like we're having a bad day with github server...
