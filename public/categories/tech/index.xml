@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tech on Karmotrine Dream</title>
+    <link>/categories/tech/</link>
+    <description>Recent content in Tech on Karmotrine Dream</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 22 Dec 2021 12:32:17 +0800</lastBuildDate><atom:link href="/categories/tech/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Documenting R SCENIC installation</title>
+      <link>/post/install-r-scenic/</link>
+      <pubDate>Wed, 22 Dec 2021 12:32:17 +0800</pubDate>
+      
+      <guid>/post/install-r-scenic/</guid>
+      <description>TL;DR First consulted this page
+I have R-4.0.5 with Bioconductor 3.12(4.0), use the latest scripts for installation.
+In Rstudio:
+&amp;gt; if (!requireNamespace(&amp;quot;BiocManager&amp;quot;, quietly = TRUE)) install.packages(&amp;quot;BiocManager&amp;quot;) &amp;gt; BiocManager::version() &amp;gt; # If your bioconductor version is previous to 4.0, see the section bellow &amp;gt; &amp;gt; ## Required &amp;gt; BiocManager::install(c(&amp;quot;AUCell&amp;quot;, &amp;quot;RcisTarget&amp;quot;)) &amp;gt; BiocManager::install(c(&amp;quot;GENIE3&amp;quot;)) # Optional. Can be replaced by GRNBoost &amp;gt; &amp;gt; ## Optional (but highly recommended): &amp;gt; # To score the network on cells (i.</description>
+    </item>
+    
+    <item>
+      <title>Working with pySCENIC</title>
+      <link>/post/using-scenic/</link>
+      <pubDate>Wed, 15 Dec 2021 23:07:11 +0800</pubDate>
+      
+      <guid>/post/using-scenic/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Building Environments for Cellassign and CellBLAST with multiple GPU Supported Tensorflow Versions on Ubuntu</title>
+      <link>/post/build-tensorflow/</link>
+      <pubDate>Sun, 05 Dec 2021 22:57:25 +0800</pubDate>
+      
+      <guid>/post/build-tensorflow/</guid>
+      <description>As promised, I will write about my experience with installing tensorflow.
+Why did I ever have to build Tensorflow myself?
+The reason is that I was trying to use two tools: cellassign and Cell_BLAST, but they depend on different tensorflow versions. To make them both work, I used the following build strategy that allows different Tensorflow versions installed and run in separate conda environments.
+Main References:  link1 - Best post for the job link2 - Official guide link3  Since I don&amp;rsquo;t have time to write too much, I&amp;rsquo;ll try to make things brief.</description>
+    </item>
+    
+    <item>
+      <title>Clean Built of Multiple R Versions on Ubuntu</title>
+      <link>/post/mult-r/</link>
+      <pubDate>Thu, 02 Dec 2021 19:54:09 +0800</pubDate>
+      
+      <guid>/post/mult-r/</guid>
+      <description>Long time ago I built R-4.0.3 on Ubuntu system following these guides: link1, link2. Briefly, I added GPG Key to APT (Advanced Package Tool) and added CRAN repository and directly retrieved R by apt.
+$ sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 $ sudo add-apt-repository &#39;deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran40/&#39; $ sudo apt update $ sudo apt install r-base Recently, I ran into an issue with cellassign when analyzing single cell datasets. I suspected that reverting to previous R versions might resolve the problem.</description>
+    </item>
+    
+    <item>
+      <title>Frquently Used Softwares</title>
+      <link>/post/frq-used/</link>
+      <pubDate>Thu, 02 Dec 2021 17:41:03 +0800</pubDate>
+      
+      <guid>/post/frq-used/</guid>
+      <description>Softwares used in works. Some require built from scratch.
+Mac (iOS)  bash tools  brew tree   softwares  R    Ubuntu  Bioinformatics  samtools STAR umi_tools    Single cell biology  R  Seurat   python  geosketch    </description>
+    </item>
+    
+    <item>
+      <title>My First Post</title>
+      <link>/post/my-first-post/</link>
+      <pubDate>Tue, 23 Nov 2021 19:59:57 +0800</pubDate>
+      
+      <guid>/post/my-first-post/</guid>
+      <description>Hosting my first Blog with Hugo on Github!
+For a starter, I&amp;rsquo;ll document in this post how the blog is managed and used. I&amp;rsquo;ve setup the site by referring to here, here, and here.
+The first link is particularly useful. I&amp;rsquo;ve adopted its file structure for setting up privately managed (/blog) and public sites (/public). Critically, the /public repo must be created with the following convention: https://github.com/RuiyuRayWang/ruiyuraywang.github.io Everytime contents in /blog is updated, run hugo -D to generate new site to /public and push /public to github accordingly.</description>
+    </item>
+    
+  </channel>
+</rss>

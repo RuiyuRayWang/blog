@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html><head>
+<title>Building Environments for Cellassign and CellBLAST with multiple GPU Supported Tensorflow Versions on Ubuntu</title>
+
+
+
+
+<meta charset="utf-8">
+<meta name="X-UA-Compatible" content="IE=edge">
+<meta name="google-site-verification" content="">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+<meta content="telephone=no" name="format-detection">
+<meta name="description" content="">
+<meta name="renderer" content="webkit">
+<meta name="theme-color" content="#ffffff">
+
+
+
+<meta property="og:title" content="Building Environments for Cellassign and CellBLAST with multiple GPU Supported Tensorflow Versions on Ubuntu" />
+<meta property="og:description" content="As promised, I will write about my experience with installing tensorflow.
+Why did I ever have to build Tensorflow myself?
+The reason is that I was trying to use two tools: cellassign and Cell_BLAST, but they depend on different tensorflow versions. To make them both work, I used the following build strategy that allows different Tensorflow versions installed and run in separate conda environments.
+Main References:  link1 - Best post for the job link2 - Official guide link3  Since I don&rsquo;t have time to write too much, I&rsquo;ll try to make things brief." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/build-tensorflow/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-12-05T22:57:25+08:00" />
+<meta property="article:modified_time" content="2021-12-05T22:57:25+08:00" /><meta property="og:site_name" content="My Blog" />
+
+
+
+
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Building Environments for Cellassign and CellBLAST with multiple GPU Supported Tensorflow Versions on Ubuntu"/>
+<meta name="twitter:description" content="As promised, I will write about my experience with installing tensorflow.
+Why did I ever have to build Tensorflow myself?
+The reason is that I was trying to use two tools: cellassign and Cell_BLAST, but they depend on different tensorflow versions. To make them both work, I used the following build strategy that allows different Tensorflow versions installed and run in separate conda environments.
+Main References:  link1 - Best post for the job link2 - Official guide link3  Since I don&rsquo;t have time to write too much, I&rsquo;ll try to make things brief."/>
+
+
+
+
+
+
+
+<link type="text/css" rel="stylesheet" href="/vendor/css/bootstrap.min.css">
+
+
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/scss/journal.min.3f72a5fc8f5b5dd732a4b476aced0eece2156958d9d414316494ddb10593ddf7.css" integrity="sha256-P3Kl/I9bXdcypLR2rO0O7OIVaVjZ1BQxZJTdsQWT3fc=" media="screen">
+
+
+
+<link rel="stylesheet" href="/scss/dark-mode.min.f7c2efa7183435a6bd1842f91c541481c7a5137b5991629a870f24e4a516ad4b.css" integrity="sha256-98Lvpxg0Naa9GEL5HFQUgcelE3tZkWKahw8k5KUWrUs=" media="screen">
+
+
+<script src="/vendor/js/loadCSS.js"></script>
+<script>
+  loadCSS("https://fonts.googleapis.com/css?family=Fira+Mono|Material+Icons");
+</script>
+
+
+
+
+
+
+  <script src="/js/toc.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+    	<div id="app"><div id="sideContainer" class="side-container">
+    
+    <a class="a-block nav-head false" href="/">
+    
+        <div class="nav-title">
+            Karmotrine Dream
+        </div>
+        
+    </a>
+
+    <div class="nav-link-list">
+        
+        
+            
+            
+            
+            
+            
+            <a class="a-block nav-link-item false" href="/posts">
+                Archive
+            </a>
+            
+        
+            
+            
+            
+            
+            
+            <a class="a-block nav-link-item false" href="/categories">
+                Categories
+            </a>
+            
+        
+            
+            
+            
+            
+            
+            <a class="a-block nav-link-item false" href="/tags">
+                Tags
+            </a>
+            
+        
+            
+            
+            
+            
+            
+            <a class="a-block nav-link-item false" href="/index.xml">
+                RSS Feed
+            </a>
+            
+        
+    </div>
+
+    
+
+    <div class="nav-footer">
+        
+Hugo Theme <a href="https://github.com/amazingrise/hugo-theme-diary">Diary</a> by <a href="https://amazingrise.net">Rise</a>
+<br>
+Ported from <a href="https://mak1t0.cc/" target="_blank" rel="noreferrer noopener">Makito</a>'s <a href="https://github.com/SumiMakito/hexo-theme-journal/" target="_blank" rel="noreferrer noopener">Journal.</a> <br>
+<br>
+
+&copy;
+	
+	2021 Karmotrine Dream
+	
+
+    </div>
+    
+</div><div id="extraContainer" class="extra-container">
+    
+    
+    <div class="toc animated-visibility" :class="{ invisible: scrollY <= 140 }">
+
+
+	<div class="toc-content">
+	
+		
+		
+		
+		<center>- CATALOG -</center>
+		
+		
+		<ul>
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#main-references" onclick="onNavClick(`#main-references-nav`)" id="main-references-nav">
+									Main References:
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#tldr" onclick="onNavClick(`#tldr-nav`)" id="tldr-nav">
+									TL;DR
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								
+									<ul>
+								
+							
+						
+						
+							<li>
+								<a href="#1-purge-previous-installations" onclick="onNavClick(`#1-purge-previous-installations-nav`)" id="1-purge-previous-installations-nav">
+									1. Purge previous installations
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#2-install-nvidia-driver" onclick="onNavClick(`#2-install-nvidia-driver-nav`)" id="2-install-nvidia-driver-nav">
+									2. Install NVIDIA driver
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#3-install-the-cuda-stack" onclick="onNavClick(`#3-install-the-cuda-stack-nav`)" id="3-install-the-cuda-stack-nav">
+									3. Install the “CUDA stack”
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								
+									<ul>
+								
+							
+						
+						
+							<li>
+								<a href="#31-cuda-110--cudnn-804-for-cellassign" onclick="onNavClick(`#31-cuda-110--cudnn-804-for-cellassign-nav`)" id="31-cuda-110--cudnn-804-for-cellassign-nav">
+									3.1 CUDA-11.0 &amp; cuDNN-8.0.4 for cellassign
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#32-cuda-90--cudnn-765-for-cellblast" onclick="onNavClick(`#32-cuda-90--cudnn-765-for-cellblast-nav`)" id="32-cuda-90--cudnn-765-for-cellblast-nav">
+									3.2 CUDA-9.0 &amp; cuDNN-7.6.5 for cellblast
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#33-fix-symlink" onclick="onNavClick(`#33-fix-symlink-nav`)" id="33-fix-symlink-nav">
+									3.3 Fix symlink
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+							
+								</ul>
+							
+						
+						
+						
+							<li>
+								<a href="#4-setup-environment-and-install-tools" onclick="onNavClick(`#4-setup-environment-and-install-tools-nav`)" id="4-setup-environment-and-install-tools-nav">
+									4. Setup Environment and Install Tools
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								
+									<ul>
+								
+							
+						
+						
+							<li>
+								<a href="#41-cellassign" onclick="onNavClick(`#41-cellassign-nav`)" id="41-cellassign-nav">
+									4.1 cellassign
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								
+									<ul>
+								
+							
+						
+						
+							<li>
+								<a href="#setup-shell-scripts-for-cellassign-conda-environment" onclick="onNavClick(`#setup-shell-scripts-for-cellassign-conda-environment-nav`)" id="setup-shell-scripts-for-cellassign-conda-environment-nav">
+									Setup shell scripts for cellassign conda environment
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#install-cellassign" onclick="onNavClick(`#install-cellassign-nav`)" id="install-cellassign-nav">
+									Install cellassign
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+							
+								</ul>
+							
+						
+						
+						
+							<li>
+								<a href="#42-cell-blast" onclick="onNavClick(`#42-cell-blast-nav`)" id="42-cell-blast-nav">
+									4.2 Cell-BLAST
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								
+									<ul>
+								
+							
+						
+						
+							<li>
+								<a href="#setup-shell-scripts-for-cellblast-conda-environment" onclick="onNavClick(`#setup-shell-scripts-for-cellblast-conda-environment-nav`)" id="setup-shell-scripts-for-cellblast-conda-environment-nav">
+									Setup shell scripts for cellblast conda environment
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#install-cell-blast" onclick="onNavClick(`#install-cell-blast-nav`)" id="install-cell-blast-nav">
+									Install Cell-BLAST
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+							
+								</ul>
+							
+								</ul>
+							
+						
+						
+						
+							<li>
+								<a href="#miscellaneous" onclick="onNavClick(`#miscellaneous-nav`)" id="miscellaneous-nav">
+									Miscellaneous
+								</a>
+							</li>
+						
+						
+					
+				
+			
+		</ul>
+	</div>
+
+</div>
+    
+    <div class="pagination">
+        <a id="globalBackToTop" class="pagination-action animated-visibility" href="#top" :class="{ invisible: scrollY == 0 }">
+            <i class="material-icons pagination-action-icon">
+                keyboard_arrow_up
+            </i>
+        </a>
+        
+        <a type="button" class="pagination-action" id="darkModeToggleButton">
+            <span class="material-icons pagination-action-icon" id="darkModeToggleIcon">
+                dark_mode
+            </span>
+        </a>
+        
+        
+    </div>
+</div>
+<div class="single-column-drawer-container" id="drawer"
+     v-bind:class="{ 'single-column-drawer-container-active': isDrawerOpen }">
+    <div class="drawer-content">
+        <div class="drawer-menu">
+            
+            
+            
+                
+                
+                
+                
+                
+                <a class="a-block drawer-menu-item false" href="/posts">
+                    Archive
+                </a>
+                
+            
+                
+                
+                
+                
+                
+                <a class="a-block drawer-menu-item false" href="/categories">
+                    Categories
+                </a>
+                
+            
+                
+                
+                
+                
+                
+                <a class="a-block drawer-menu-item false" href="/tags">
+                    Tags
+                </a>
+                
+            
+                
+                
+                
+                
+                
+                <a class="a-block drawer-menu-item false" href="/index.xml">
+                    RSS Feed
+                </a>
+                
+            
+            
+            <div class="toc">
+
+
+	<div class="toc-content">
+	
+		
+		
+		
+		<center>- CATALOG -</center>
+		
+		
+		<ul>
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#main-references" onclick="onNavClick(`#main-references-nav`)" id="main-references-nav">
+									Main References:
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#tldr" onclick="onNavClick(`#tldr-nav`)" id="tldr-nav">
+									TL;DR
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								
+									<ul>
+								
+							
+						
+						
+							<li>
+								<a href="#1-purge-previous-installations" onclick="onNavClick(`#1-purge-previous-installations-nav`)" id="1-purge-previous-installations-nav">
+									1. Purge previous installations
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#2-install-nvidia-driver" onclick="onNavClick(`#2-install-nvidia-driver-nav`)" id="2-install-nvidia-driver-nav">
+									2. Install NVIDIA driver
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#3-install-the-cuda-stack" onclick="onNavClick(`#3-install-the-cuda-stack-nav`)" id="3-install-the-cuda-stack-nav">
+									3. Install the “CUDA stack”
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								
+									<ul>
+								
+							
+						
+						
+							<li>
+								<a href="#31-cuda-110--cudnn-804-for-cellassign" onclick="onNavClick(`#31-cuda-110--cudnn-804-for-cellassign-nav`)" id="31-cuda-110--cudnn-804-for-cellassign-nav">
+									3.1 CUDA-11.0 &amp; cuDNN-8.0.4 for cellassign
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#32-cuda-90--cudnn-765-for-cellblast" onclick="onNavClick(`#32-cuda-90--cudnn-765-for-cellblast-nav`)" id="32-cuda-90--cudnn-765-for-cellblast-nav">
+									3.2 CUDA-9.0 &amp; cuDNN-7.6.5 for cellblast
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#33-fix-symlink" onclick="onNavClick(`#33-fix-symlink-nav`)" id="33-fix-symlink-nav">
+									3.3 Fix symlink
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+							
+								</ul>
+							
+						
+						
+						
+							<li>
+								<a href="#4-setup-environment-and-install-tools" onclick="onNavClick(`#4-setup-environment-and-install-tools-nav`)" id="4-setup-environment-and-install-tools-nav">
+									4. Setup Environment and Install Tools
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								
+									<ul>
+								
+							
+						
+						
+							<li>
+								<a href="#41-cellassign" onclick="onNavClick(`#41-cellassign-nav`)" id="41-cellassign-nav">
+									4.1 cellassign
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								
+									<ul>
+								
+							
+						
+						
+							<li>
+								<a href="#setup-shell-scripts-for-cellassign-conda-environment" onclick="onNavClick(`#setup-shell-scripts-for-cellassign-conda-environment-nav`)" id="setup-shell-scripts-for-cellassign-conda-environment-nav">
+									Setup shell scripts for cellassign conda environment
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#install-cellassign" onclick="onNavClick(`#install-cellassign-nav`)" id="install-cellassign-nav">
+									Install cellassign
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+							
+								</ul>
+							
+						
+						
+						
+							<li>
+								<a href="#42-cell-blast" onclick="onNavClick(`#42-cell-blast-nav`)" id="42-cell-blast-nav">
+									4.2 Cell-BLAST
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								
+									<ul>
+								
+							
+						
+						
+							<li>
+								<a href="#setup-shell-scripts-for-cellblast-conda-environment" onclick="onNavClick(`#setup-shell-scripts-for-cellblast-conda-environment-nav`)" id="setup-shell-scripts-for-cellblast-conda-environment-nav">
+									Setup shell scripts for cellblast conda environment
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#install-cell-blast" onclick="onNavClick(`#install-cell-blast-nav`)" id="install-cell-blast-nav">
+									Install Cell-BLAST
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+							
+								</ul>
+							
+								</ul>
+							
+						
+						
+						
+							<li>
+								<a href="#miscellaneous" onclick="onNavClick(`#miscellaneous-nav`)" id="miscellaneous-nav">
+									Miscellaneous
+								</a>
+							</li>
+						
+						
+					
+				
+			
+		</ul>
+	</div>
+
+</div>
+            
+        </div>
+    </div>
+</div>
+<transition name="fade">
+    <div id="drawer-mask" v-bind:class="{ 'single-column-drawer-mask': mounted }" v-if="isDrawerOpen" v-on:click="toggleDrawer"></div>
+</transition>
+<nav id="navBar" class="navbar sticky-top navbar-light single-column-nav-container">
+    <div id="navBackground" class="nav-background"></div>
+    <div class="container container-narrow nav-content">
+        <button id="nav_dropdown_btn" class="nav-dropdown-toggle" type="button" v-on:click="toggleDrawer">
+            <i class="material-icons">
+                menu
+            </i>
+        </button>
+        <a id="navTitle" class="navbar-brand" href="/">
+            Karmotrine Dream
+        </a>
+        
+        <button type="button" class="nav-darkmode-toggle" id="darkModeToggleButton2">
+            <i class="material-icons" id="darkModeToggleIcon2">
+                dark_mode
+            </i>
+        </button>
+        
+    </div>
+</nav>
+<div class="single-column-header-container" id="pageHead"
+     v-bind:style="{ transform: 'translateZ(0px) translateY('+.3*scrollY+'px)', opacity: 1-navOpacity }">
+    <a href="/">
+        <div class="single-column-header-title">Karmotrine Dream</div>
+        
+
+    </a>
+</div>
+
+            <div id="content">
+                <div id="streamContainer" class="stream-container">
+
+    <div class="post-list-container post-list-container-shadow">
+        <div class="post">
+            
+            
+            
+
+            <div class="post-head-wrapper-text-only"
+                
+            >
+                <div class="post-title">
+                    Building Environments for Cellassign and CellBLAST with multiple GPU Supported Tensorflow Versions on Ubuntu
+                    
+                    <div class="post-meta">
+                        
+                        <time itemprop="datePublished">
+                            2021-12-05 22:57
+                        </time>
+                        
+
+                        
+                            <i class="material-icons" style="">folder</i>
+                                <a href="/categories/">[Tech]</a>
+                                &nbsp;
+                        
+
+                        
+                            <i class="material-icons" style="">label</i>
+                            
+                                <a href="/tags/tensorflow">Tensorflow</a>
+                                &nbsp;
+                            
+                                <a href="/tags/ubuntu">Ubuntu</a>
+                                &nbsp;
+                            
+                                <a href="/tags/deep-learning">Deep Learning</a>
+                                &nbsp;
+                            
+                                <a href="/tags/single-cell-biology">Single Cell Biology</a>
+                                &nbsp;
+                            
+                        
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="post-body-wrapper">
+                
+                <div class="post-body" v-pre>
+                
+                    <p>As promised, I will write about my experience with installing tensorflow.</p>
+<p>Why did I ever have to build Tensorflow myself?<br>
+The reason is that I was trying to use two tools: <code>cellassign</code> and <code>Cell_BLAST</code>, but they depend on different tensorflow versions. To make them both work, I used the following build strategy that allows different Tensorflow versions installed and run in separate conda environments.</p>
+<h1 id="main-references">Main References:</h1>
+<ul>
+<li><a href="https://blog.kovalevskyi.com/multiple-version-of-cuda-libraries-on-the-same-machine-b9502d50ae77">link1</a> - Best post for the job</li>
+<li><a href="https://www.tensorflow.org/install/gpu">link2</a> - Official guide</li>
+<li><a href="https://towardsdatascience.com/installing-multiple-cuda-cudnn-versions-in-ubuntu-fcb6aa5194e2">link3</a></li>
+</ul>
+<h6 id="since-i-dont-have-time-to-write-too-much-ill-try-to-make-things-brief">Since I don&rsquo;t have time to write too much, I&rsquo;ll try to make things brief.</h6>
+<h1 id="tldr">TL;DR</h1>
+<h2 id="1-purge-previous-installations">1. Purge previous installations</h2>
+<pre tabindex="0"><code>## Purge previous installations
+$ sudo apt-get --purge remove &quot;*cublas*&quot; &quot;cuda*&quot; &quot;nsight*&quot;
+$ sudo apt-get --purge remove &quot;*nvidia*&quot;
+$ sudo rf -rf /usr/local/cuda*  ## source files
+$ sudo vim /etc/apt/sources.list  ## Fix repo: remove all entries with referece to &quot;nvidia&quot;
+$ sudo apt-get update
+$ sudo apt autoremove
+</code></pre><pre tabindex="0"><code>$ sudo apt-key list
+</code></pre><p>Removed two GPG keys:</p>
+<pre tabindex="0"><code>/etc/apt/trusted.gpg
+--------------------
+pub   rsa4096 2017-09-28 [SCE]
+      C95B 321B 61E8 8C18 09C4  F759 DDCA E044 F796 ECB0
+uid           [ unknown] NVIDIA CORPORATION (Open Source Projects) &lt;cudatools@nvidia.com&gt;
+
+pub   rsa4096 2016-06-24 [SC]
+      AE09 FE4B BD22 3A84 B2CC  FCE3 F60F 4B3D 7FA2 AF80
+uid           [ unknown] cudatools &lt;cudatools@nvidia.com&gt;
+</code></pre><pre tabindex="0"><code>$ sudo apt-key del &quot;C95B 321B 61E8 8C18 09C4  F759 DDCA E044 F796 ECB0&quot;
+OK
+$ sudo apt-key del &quot;AE09 FE4B BD22 3A84 B2CC  FCE3 F60F 4B3D 7FA2 AF80&quot;
+OK
+</code></pre><h2 id="2-install-nvidia-driver">2. Install NVIDIA driver</h2>
+<p><a href="https://www.nvidia.com/download/index.aspx?lang=en-us">Download page</a>.</p>
+<p>To choose driver version, keep one rule in mind:</p>
+<blockquote>
+<p>There is only one requirement, that one needs to satisfy in order to install multiple CUDA on the same machine. You need to have latest Nvidia driver that is required by the highest CUDA that you’re going to install. Usually it is a good idea to install precise driver that was used during the build of CUDA.</p>
+</blockquote>
+<p>Since my driver is installed via runfile, the purge steps above will also remove my driver. I need to install it back.</p>
+<p>Download the driver <a href="https://www.nvidia.com/download/index.aspx?lang=en-us">here</a>, and execute the runfile:</p>
+<pre tabindex="0"><code>$ sudo ./NVIDIA-Linux-x86_64_470.86.run
+</code></pre><p>First time running the script received an error.</p>
+<blockquote>
+<p>ERROR: Nouveau kernel driver is currently in use by your system. &hellip; For some distributions, Nouveau can be disabled by adding a file in the modprobe configuration directory. Would you like nvidia-installer to attempt to create this modprobe file for you? (Answer: Yes)</p>
+<p>Note if you later wish to re-enable Nouveau, you will need to delete these files: /etc/modprobe.d/nvidia-installer-disable-nouveau.conf</p>
+</blockquote>
+<p>Disable the Nouveau and reboot the system.</p>
+<pre tabindex="0"><code>$ reboot
+</code></pre><p>After reboot there will be no GUI (because the graphics card&rsquo;s driver has been disabled!).<br>
+Logged in remotely via ssh to execute the <code>.run</code> script:</p>
+<pre tabindex="0"><code>$ sudo ./NVIDIA-Linux-x86_64_470.86.run
+</code></pre><p>Followed the installation instructions to get the driver back to work.<br>
+Immediately after the installation succeeds, Ubuntu GUI shows up.</p>
+<p>Check driver configs:</p>
+<pre tabindex="0"><code>$ nvidia-smi
+Thu Dec 16 16:32:13 2021       
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 450.51.06    Driver Version: 450.51.06    CUDA Version: 11.0     |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|                               |                      |               MIG M. |
+|===============================+======================+======================|
+|   0  Quadro M4000        On   | 00000000:02:00.0  On |                  N/A |
+| 53%   55C    P8    15W / 120W |    514MiB /  8125MiB |      8%      Default |
+|                               |                      |                  N/A |
++-------------------------------+----------------------+----------------------+
+                                                                               
++-----------------------------------------------------------------------------+
+| Processes:                                                                  |
+|  GPU   GI   CI        PID   Type   Process name                  GPU Memory |
+|        ID   ID                                                   Usage      |
+|=============================================================================|
+|    0   N/A  N/A      2126      G   /usr/lib/xorg/Xorg                187MiB |
+|    0   N/A  N/A      2545      G   /usr/bin/gnome-shell              203MiB |
+|    0   N/A  N/A      7112      G   /usr/lib/rstudio/bin/rstudio       97MiB |
+|    0   N/A  N/A     12153      G   /usr/lib/firefox/firefox            2MiB |
+|    0   N/A  N/A     19111      G   /usr/lib/firefox/firefox            2MiB |
+|    0   N/A  N/A     21047      G   /usr/lib/firefox/firefox            2MiB |
+|    0   N/A  N/A     25663      G   /usr/lib/firefox/firefox            2MiB |
+|    0   N/A  N/A     27497      G   /usr/lib/firefox/firefox            2MiB |
+|    0   N/A  N/A     39185      G   /usr/lib/firefox/firefox            2MiB |
++-----------------------------------------------------------------------------+
+</code></pre><h2 id="3-install-the-cuda-stack">3. Install the &ldquo;CUDA stack&rdquo;</h2>
+<p>What&rsquo;s in the &ldquo;CUDA stack&rdquo; (as of 2021.12.17)?</p>
+<ul>
+<li>CUDA</li>
+<li>cuDNN</li>
+<li>CUPTI</li>
+<li>TensorRT (optional)</li>
+</ul>
+<p>According to <a href="https://blog.kovalevskyi.com/multiple-version-of-cuda-libraries-on-the-same-machine-b9502d50ae77">kovalevskyi&rsquo;s guide</a>, <strong>use CUDA <code>runfile (local)</code> installers</strong>.</p>
+<blockquote>
+<p>I would strongly recommend use the installer script. First of all, it is agnostic to the version of the Linux that is used. Secondly, unlike some binary pre-build packages like deb file you can control where exactly CUDA library files will be installed.</p>
+</blockquote>
+<p>The &ldquo;CUDA stack&rdquo; compatibility matrix can be checked <a href="https://www.tensorflow.org/install/source#gpu">here</a>.<br>
+<code>cellassign</code> requires <code>tensorflow &gt;= 2.1.0</code>.<br>
+With some tests I decided to use <code>2.4.0</code>. For <code>tensorflow==2.4.0</code> I need <code>CUDA 11.0</code> and <code>cuDNN 8.0</code>.<br>
+<code>Cell_BLAST</code> requires <code>tensorflow == 1.12.0</code> which depends on <code>CUDA 9.0</code> and <code>cuDNN 7</code>.</p>
+<p>Download the CUDA Toolkit installers <a href="https://developer.nvidia.com/cuda-toolkit-archive">here</a>.
+Read the <strong>&ldquo;Versioned Online Documentation&rdquo;</strong>, for example <a href="https://docs.nvidia.com/cuda/archive/11.0/">this one</a>, to understand what&rsquo;s going on.</p>
+<p><strong>Pre-installation actions</strong>:
+Not mandatory. Just make sure they&rsquo;ll pass.</p>
+<pre tabindex="0"><code>$ lspci | grep -i nvidia  ## Verify a CUDA-capable GPU is available
+$ uname -m &amp;&amp; cat /etc/*release  ## Verify Linux Version Support
+$ gcc --version  ## Verify that gcc is installed
+</code></pre><h3 id="31-cuda-110--cudnn-804-for-cellassign">3.1 CUDA-11.0 &amp; cuDNN-8.0.4 for cellassign</h3>
+<p>Download <strong>the <code>.run</code> file</strong>.</p>
+<pre tabindex="0"><code>$ wget http://developer.download.nvidia.com/compute/cuda/11.0.2/local_installers/cuda_11.0.2_450.51.05_linux.run
+$ chmod u+x cuda_11.0.2_450.51.05_linux.run
+$ sudo ./cuda_11.0.2_450.51.05_linux.run --silent --toolkit --tookitpath=/usr/local/cuda-11.0
+</code></pre><p>What are these flags doing? Quoting <a href="https://blog.kovalevskyi.com/multiple-version-of-cuda-libraries-on-the-same-machine-b9502d50ae77">Kovalevskyi</a>:</p>
+<blockquote>
+<p><code>--silent</code> — this will force installer to do everything in a silent mode without any interactive prompt. Really useful for the automation<br>
+<code>--toolkit</code> — install only the toolkit, majority of users probably indeed need only toolkit<br>
+<code>--toolkitpath</code> — this is where all the magic starts, each cuda that we’re going to install needs to be installed in its own separate folder, in our example CUDA9 is installed in /usr/local/cuda-9.0, therefore CUDA8 will be installed in /usr/local/cuda-8, CUDA9.1 can go to /usr/local/cuda-9.1 , etc</p>
+</blockquote>
+<p>Create an NVIDIA account and download the cuDNN installers <a href="https://developer.nvidia.cn/rdp/cudnn-archive">here</a>. <strong>Use <code>.tgz</code> file.</strong>
+For cuDNN, here are the <strong>installation guide</strong> for the <a href="https://docs.nvidia.com/deeplearning/cudnn/index.html">latest release</a> or <a href="https://docs.nvidia.com/deeplearning/cudnn/archives/index.html">archived relases</a>. But we need to make a little hack.</p>
+<pre tabindex="0"><code>$ tar -xzvf cudnn-11.0-linux-x64-v8.0.4.30.tgz
+## Some hacks
+$ sudo cp cuda/include/cudnn*.h /usr/local/cuda-11.0/include
+$ sudo cp cuda/lib64/libcudnn* /usr/local/cuda-11.0/lib64
+$ sudo chmod a+r /usr/local/cuda-11.0/include/cudnn*.h /usr/local/cuda-11.0/lib64/libcudnn*
+</code></pre><h3 id="32-cuda-90--cudnn-765-for-cellblast">3.2 CUDA-9.0 &amp; cuDNN-7.6.5 for cellblast</h3>
+<p>Repeat the steps above to install <code>CUDA-9.0</code> &amp; <code>cuDNN-7.6.5</code>.</p>
+<p>For <code>CUDA 9.0</code>, gcc must be downgraded to <code>gcc-4.8</code> in order to compile during cuda runfile install. Do:</p>
+<pre tabindex="0"><code>$ gcc -v
+...
+gcc version 7.5.0 (Ubuntu 7.5.0-3ubuntu1~18.04)
+$ sudo apt-get install gcc-4.8
+$ sudo update-alternatives --remove-all gcc
+$ sudo apt-get install gcc
+$ gcc -v
+...
+gcc version 4.8.5 (Ubuntu 4.8.5-4ubuntu8)
+</code></pre><p>Install <code>CUDA-9.0</code> from runfile:</p>
+<pre tabindex="0"><code>$ chmod u+x cuda_9.0.176_384.81_linux.run
+$ sudo ./cuda_9.0.176_384.81_linux.run --silent --toolkit --toolkitpath=/usr/local/cuda-9.0
+</code></pre><p>Install <code>cuDNN-7.6.5</code> from <code>.tgz</code>:</p>
+<pre tabindex="0"><code>$ tar -xvzf cudnn-10.1-linux-x64-v7.6.5.32.tgz
+$ sudo cp cuda/include/cudnn.h /usr/local/cuda-9.0/include
+$ sudo cp cuda/lib64/libcudnn* /usr/local/cuda/lib64
+$ sudo chmod a+r /usr/local/cuda-9.0/include/cudnn.h /usr/local/cuda-9.0/lib64/libcudnn*
+</code></pre><p>Get gcc 7.5.0 back (<a href="https://linuxize.com/post/how-to-install-gcc-compiler-on-ubuntu-18-04/#installing-multiple-gcc-versions">ref</a>):</p>
+<pre tabindex="0"><code>$ sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 50
+</code></pre><p>According to the TensorRT <a href="https://docs.nvidia.com/deeplearning/tensorrt/archives/tensorrt-601/tensorrt-support-matrix/index.html">support matrix</a>, there is currently no TensorRT support for <code>CUDA 11.0</code> &amp; <code>cuDNN 8.0.4</code>. For <code>CUDA 9.0</code> &amp; <code>cuDNN 7.6.5</code>, <code>TensorRT 6.0.1</code> is available. However, TensorRT is optional, I haven&rsquo;t figured out exactly how to make a clean installation, so skip it for now.</p>
+<p>For <strong>post-installation actions</strong>, i.e. PATH, LD_LIBRARY_PATH variables, we will set them up in environment configuration step (sections below).</p>
+<h3 id="33-fix-symlink">3.3 Fix symlink</h3>
+<p>Make <code>/usr/local/cuda</code> point to the folder holding the default cuda version, which in my case is <code>CUDA-11.0</code>. This may be useful for other applications, for example <code>U-net</code>.</p>
+<pre tabindex="0"><code>sudo rm /usr/local/cuda
+sudo ln -s /usr/local/cuda-11.0 /usr/local/cuda
+</code></pre><h2 id="4-setup-environment-and-install-tools">4. Setup Environment and Install Tools</h2>
+<p>Build environments for <code>cellassign</code> and <code>cellblast</code>.</p>
+<h3 id="41-cellassign">4.1 cellassign</h3>
+<p>Create new environment:</p>
+<pre tabindex="0"><code>$ conda create -n cellassign python=3.7
+</code></pre><h4 id="setup-shell-scripts-for-cellassign-conda-environment">Setup shell scripts for <code>cellassign</code> conda environment</h4>
+<p>On activation of environment:</p>
+<pre tabindex="0"><code>$ mkdir -p ~/miniconda3/envs/cellassign/etc/conda/activate.d
+$ touch ~/miniconda3/envs/cellassign/etc/conda/activate.d/activate.sh
+$ vim ~/miniconda3/envs/cellassign/etc/conda/activate.d/activate.sh
+$ chmod +x ~/miniconda3/envs/cellassign/etc/conda/activate.d/activate.sh
+</code></pre><p>Put these into <code>activate.sh</code>:</p>
+<pre tabindex="0"><code>#!/bin/sh
+ORIGINAL_PATH=$PATH
+export PATH=/usr/local/cuda-11.0/bin:$PATH
+ORIGINAL_LD_LIBRARY_PATH=$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/usr/local/cuda-11.0/bin:/usr/local/cuda-11.0/lib64:/usr/local/cuda-11.0/extras/CUPTI/lib64:$LD_LIBRARY_PATH
+</code></pre><p>On deactivation of environment:</p>
+<pre tabindex="0"><code>$ mkdir -p ~/miniconda3/envs/cellassign/etc/conda/deactivate.d
+$ touch ~/miniconda3/envs/cellassign/etc/conda/deactivate.d/deactivate.sh
+$ vim ~/miniconda3/envs/cellassign/etc/conda/deactivate.d/deactivate.sh
+$ chmod +x ~/miniconda3/envs/cellassign/etc/conda/deactivate.d/deactivate.sh
+</code></pre><p>Put these into <code>deactivate.sh</code>:</p>
+<pre tabindex="0"><code>#!/bin/sh
+export PATH=$ORIGINAL_PATH
+unset ORIGINAL_PATH
+export LD_LIBRARY_PATH=$ORIGINAL_LD_LIBRARY_PATH
+unset ORIGINAL_LD_LIBRARY_PATH
+</code></pre><h4 id="install-cellassign">Install cellassign</h4>
+<p>The install instructions on <code>cellassign</code> <a href="https://github.com/Irrationone/cellassign">github page</a> never worked. For a working build of <code>cellassign</code>, check out these threads:</p>
+<ul>
+<li><a href="https://github.com/Irrationone/cellassign/issues/92">link1</a></li>
+<li><a href="https://github.com/Irrationone/cellassign/issues/78#issuecomment-714901092">link2</a></li>
+<li><a href="https://github.com/Irrationone/cellassign/issues/94">link3</a></li>
+</ul>
+<p>Note that the <code>tensorflow</code> R package is <strong>NOT THE SAME</strong> as the <code>tensorflow</code> python package. Supposedly it acts as a surrogate which talks to the core <code>tensorflow</code> python package. Both (the R and the python packages) are required in order for <code>cellassign</code> to work.</p>
+<pre tabindex="0"><code>## In R
+&gt; # install.packages(&quot;tensorflow&quot;) ## DON'T DO THIS!
+&gt; devtools::install_github(&quot;rstudio/tensorflow@v2.4.0&quot;)  ## DO THIS!!
+</code></pre><p>Although I could use R <code>tensorflow</code> to install the python package, I find it more convenient to install it directly into the conda environment from terminal.</p>
+<pre tabindex="0"><code>## In terminal
+$ conda activate cellassign
+$ pip install --upgrade pip
+$ pip install tensorflow==2.4.0
+$ pip install tensorflow-gpu==2.4.0  ## Optional for cellassign
+$ pip install tensorflow-probability==0.12.0  ## Required!
+</code></pre><p>Install <code>cellassign</code> R package.</p>
+<pre tabindex="0"><code>## In R
+&gt; reticulate::use_condaenv(&quot;cellassign&quot;)
+&gt; tensorflow::tf_config()  ## Test installation
+2021-12-02 14:24:33.313201: I tensorflow/stream_executor/platform/default/dso_loader.cc:49] Successfully opened dynamic library libcudart.so.11.0
+Loaded Tensorflow version 2.4.0
+TensorFlow v2.4.0 (~/miniconda3/envs/cellassign/lib/python3.7/site-packages/tensorflow)
+Python v3.7 (~/miniconda3/envs/cellassign/bin/python)
+&gt;
+&gt; devtools::install_github(&quot;Irrationone/cellassign&quot;)
+</code></pre><h3 id="42-cell-blast">4.2 Cell-BLAST</h3>
+<p>Create new environment:</p>
+<pre tabindex="0"><code>$ conda create -n cellblast python=3.6
+</code></pre><h4 id="setup-shell-scripts-for-cellblast-conda-environment">Setup shell scripts for <code>cellblast</code> conda environment</h4>
+<p>Do the same for <code>cellblast</code> environment. On activation:</p>
+<pre tabindex="0"><code>$ mkdir -p ~/miniconda3/envs/cellblast/etc/conda/activate.d
+$ touch ~/miniconda3/envs/cellblast/etc/conda/activate.d/activate.sh
+$ vim ~/miniconda3/envs/cellblast/etc/conda/activate.d/activate.sh
+$ chmod +x ~/miniconda3/envs/cellblast/etc/conda/activate.d/activate.sh
+</code></pre><p>Put in <code>activate.sh</code>:</p>
+<pre tabindex="0"><code>#!/bin/sh
+ORIGINAL_PATH=$PATH
+export PATH=/usr/local/cuda-9.0/bin:$PATH
+ORIGINAL_LD_LIBRARY_PATH=$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/usr/local/cuda-9.0/bin:/usr/local/cuda-9.0/lib64:/usr/local/cuda-9.0/extras/CUPTI/lib64:$LD_LIBRARY_PATH
+</code></pre><p>On deactivation:</p>
+<pre tabindex="0"><code>$ mkdir -p ~/miniconda3/envs/cellblast/etc/conda/deactivate.d
+$ touch ~/miniconda3/envs/cellblast/etc/conda/deactivate.d/deactivate.sh
+$ vim ~/miniconda3/envs/cellblast/etc/conda/deactivate.d/deactivate.sh
+$ chmod +x ~/miniconda3/envs/cellblast/etc/conda/deactivate.d/deactivate.sh
+</code></pre><p>Put in <code>deactivate.sh</code>:</p>
+<pre tabindex="0"><code>#!/bin/sh
+export PATH=$ORIGINAL_PATH
+unset ORIGINAL_PATH
+export LD_LIBRARY_PATH=$ORIGINAL_LD_LIBRARY_PATH
+unset ORIGINAL_LD_LIBRARY_PATH
+</code></pre><h4 id="install-cell-blast">Install Cell-BLAST</h4>
+<pre tabindex="0"><code>$ pip install tensorflow-gpu==1.12  ## GPU &amp; CPU
+$ pip install tensorflow==1.12  ## CPU only
+$ pip install Cell-BLAST
+</code></pre><p>Check that installation succeeds:</p>
+<pre tabindex="0"><code>$ python
+&gt; import tensorflow as tf
+&gt; tf.test.is_gpu_available()
+...
+True
+&gt; import Cell_BLAST as cb
+</code></pre><h2 id="miscellaneous">Miscellaneous</h2>
+<p><em>The paragraph below was written at an very early stage, but later on I find them to be too verbose&hellip; I&rsquo;ve put them here anyway just so they&rsquo;re not wasted.</em></p>
+<p>To build multiple Tensorflow versions, there will be various compatibilities requirements. Consider the followings:</p>
+<ul>
+<li>Tool of interest<br>
+What tool will be tensorflow used for? What version of tensorflow does it depends on? These are the first things you should consider.<br>
+Unless using tensorflow for standalone purposes, you will have to choose a tensorflow version that is compatible with your tool. Many tools are written with legacy (older) versions of tensorflow, and they may not run properly with newer versions. Make sure to install the appropriate one. For example in my case, <code>cellassign</code> requires <code>tensorflow &gt;= 2.1.0</code>, whereas <code>Cell_BLAST</code> requires <code>tensorflow == 1.12.0</code>. These belong to two different MAJOR versions of tensorflow: <code>1.x.x</code> and <code>2.x.x</code>. Tensorflow MAJOR versions are quite different and are usually <strong>NOT</strong> interchangable.<br>
+If using tensorflow-gpu, there is also different dependencies on CUDA and cuDNN which you have to be aware about (see below).</li>
+<li>Tensorflow<br>
+Like I said above, tensorflow <code>MAJOR</code> versions can have a big difference. <strong>Remember to build dedicated environments</strong> for <strong>each tool</strong> with the required Tensorflow inside it. In my case, I created two environments, one with <code>Tensorflow&gt;=2.1.0</code> and <code>cellassign</code> installed, and the other with <code>Tensorflow==1.12.0</code> and <code>Cell_BLAST</code> installed.<br>
+For tensorflow-gpu, the decision of whether or not to install it depends on the tool you&rsquo;ll be using and on whether you think your task requires parallel computing. CPU can run properly with any task, but if the task is computationally expensive, you may want to try GPU versions of tensorflow.</li>
+<li>GCC<br>
+GCC is used for <code>make</code> build some package dependencies during tensorflow installations. I did not run into any issue with gcc on my machine. In the installation procedures, there&rsquo;s a step that explicitly checks gcc version. If you find a gcc trouble, just upgrade it and you&rsquo;ll be fine.</li>
+<li>Ubuntu<br>
+16.04? 18.04? or others? For some older versions of tensorflow, NVIDIA download page may not provide download links for the latest Ubuntu releases. But don&rsquo;t worry. I find that the Ubuntu release version doesn&rsquo;t have to be strictly followed. For example, for <code>tensorflow == 1.12.0</code> I had to install CUDA 9.0 over 18.04, but there&rsquo;s no CUDA 9.0 release for a 18.04 system, so I made an arbitrary choice: Download CUDA 9.0 for Ubuntu 16.04 and install it on 18.04. By now there seem to be no obvious issue. So don&rsquo;t be too prudent about this and experiment yourself!</li>
+<li>CUDA &amp; cuDNN<br>
+The compatibilities between CUDA and cuDNN, as well as Tensorflow, python and gcc can be found <a href="https://www.tensorflow.org/install/source#gpu">here</a>. If you use different versions of Tensorflow on the same machine, like above for <code>cellassign</code> and <code>Cell BLAST</code>, you&rsquo;ll have to make multiple CUDA &amp; cuDNN builts. For example, I&rsquo;ve built on my machine <code>CUDA 9.0 &amp; cuDNN 7.3.1</code> for <code>Cell BLAST</code> with <code>Tensorflow==1.12.0</code>, and <code>CUDA 11.0 &amp; cuDNN 8.0.4</code> for <code>cellassign</code> with <code>Tensorflow==2.4.0</code>.</li>
+</ul>
+
+                    
+                    <HR width="100%" id="EOF">
+		    <p style="color:#777;">Last modified on 2021-12-05</p>
+                    
+                </div>
+            </div>
+            
+            
+            <nav class="post-pagination">
+
+                
+                <a class="newer-posts" href="/post/using-scenic/">
+			Next<br>Working with pySCENIC
+                </a>
+                
+                
+                
+                <a class="older-posts" href="/post/mult-r/">
+			Previous<br>Clean Built of Multiple R Versions on Ubuntu
+                </a>
+                
+            </nav>
+            <div class="post-comment-wrapper">
+                
+
+
+
+
+
+
+
+
+
+
+            </div>
+        </div>
+    </div>
+
+
+                    </div>
+            </div><div id="single-column-footer">
+Hugo Theme <a href="https://github.com/amazingrise/hugo-theme-diary">Diary</a> by <a href="https://amazingrise.net">Rise</a>
+<br>
+Ported from <a href="https://mak1t0.cc/" target="_blank" rel="noreferrer noopener">Makito</a>'s <a href="https://github.com/SumiMakito/hexo-theme-journal/" target="_blank" rel="noreferrer noopener">Journal.</a> <br>
+<br>
+
+&copy;
+	
+	2021 Karmotrine Dream
+	
+</div>
+            </div>
+    
+    <script src="/js/journal.js"></script>
+    </body>
+</html>

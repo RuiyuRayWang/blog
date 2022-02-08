@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html><head>
+<title>Documenting R SCENIC installation</title>
+
+
+
+
+<meta charset="utf-8">
+<meta name="X-UA-Compatible" content="IE=edge">
+<meta name="google-site-verification" content="">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+<meta content="telephone=no" name="format-detection">
+<meta name="description" content="">
+<meta name="renderer" content="webkit">
+<meta name="theme-color" content="#ffffff">
+
+
+
+<meta property="og:title" content="Documenting R SCENIC installation" />
+<meta property="og:description" content="TL;DR First consulted this page
+I have R-4.0.5 with Bioconductor 3.12(4.0), use the latest scripts for installation.
+In Rstudio:
+&gt; if (!requireNamespace(&quot;BiocManager&quot;, quietly = TRUE)) install.packages(&quot;BiocManager&quot;) &gt; BiocManager::version() &gt; # If your bioconductor version is previous to 4.0, see the section bellow &gt; &gt; ## Required &gt; BiocManager::install(c(&quot;AUCell&quot;, &quot;RcisTarget&quot;)) &gt; BiocManager::install(c(&quot;GENIE3&quot;)) # Optional. Can be replaced by GRNBoost &gt; &gt; ## Optional (but highly recommended): &gt; # To score the network on cells (i." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/install-r-scenic/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-12-22T12:32:17+08:00" />
+<meta property="article:modified_time" content="2021-12-22T12:32:17+08:00" /><meta property="og:site_name" content="My Blog" />
+
+
+
+
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Documenting R SCENIC installation"/>
+<meta name="twitter:description" content="TL;DR First consulted this page
+I have R-4.0.5 with Bioconductor 3.12(4.0), use the latest scripts for installation.
+In Rstudio:
+&gt; if (!requireNamespace(&quot;BiocManager&quot;, quietly = TRUE)) install.packages(&quot;BiocManager&quot;) &gt; BiocManager::version() &gt; # If your bioconductor version is previous to 4.0, see the section bellow &gt; &gt; ## Required &gt; BiocManager::install(c(&quot;AUCell&quot;, &quot;RcisTarget&quot;)) &gt; BiocManager::install(c(&quot;GENIE3&quot;)) # Optional. Can be replaced by GRNBoost &gt; &gt; ## Optional (but highly recommended): &gt; # To score the network on cells (i."/>
+
+
+
+
+
+
+
+<link type="text/css" rel="stylesheet" href="/vendor/css/bootstrap.min.css">
+
+
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/scss/journal.min.3f72a5fc8f5b5dd732a4b476aced0eece2156958d9d414316494ddb10593ddf7.css" integrity="sha256-P3Kl/I9bXdcypLR2rO0O7OIVaVjZ1BQxZJTdsQWT3fc=" media="screen">
+
+
+
+<link rel="stylesheet" href="/scss/dark-mode.min.f7c2efa7183435a6bd1842f91c541481c7a5137b5991629a870f24e4a516ad4b.css" integrity="sha256-98Lvpxg0Naa9GEL5HFQUgcelE3tZkWKahw8k5KUWrUs=" media="screen">
+
+
+<script src="/vendor/js/loadCSS.js"></script>
+<script>
+  loadCSS("https://fonts.googleapis.com/css?family=Fira+Mono|Material+Icons");
+</script>
+
+
+
+
+
+
+  <script src="/js/toc.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+    	<div id="app"><div id="sideContainer" class="side-container">
+    
+    <a class="a-block nav-head false" href="/">
+    
+        <div class="nav-title">
+            Karmotrine Dream
+        </div>
+        
+    </a>
+
+    <div class="nav-link-list">
+        
+        
+            
+            
+            
+            
+            
+            <a class="a-block nav-link-item false" href="/posts">
+                Archive
+            </a>
+            
+        
+            
+            
+            
+            
+            
+            <a class="a-block nav-link-item false" href="/categories">
+                Categories
+            </a>
+            
+        
+            
+            
+            
+            
+            
+            <a class="a-block nav-link-item false" href="/tags">
+                Tags
+            </a>
+            
+        
+            
+            
+            
+            
+            
+            <a class="a-block nav-link-item false" href="/index.xml">
+                RSS Feed
+            </a>
+            
+        
+    </div>
+
+    
+
+    <div class="nav-footer">
+        
+Hugo Theme <a href="https://github.com/amazingrise/hugo-theme-diary">Diary</a> by <a href="https://amazingrise.net">Rise</a>
+<br>
+Ported from <a href="https://mak1t0.cc/" target="_blank" rel="noreferrer noopener">Makito</a>'s <a href="https://github.com/SumiMakito/hexo-theme-journal/" target="_blank" rel="noreferrer noopener">Journal.</a> <br>
+<br>
+
+&copy;
+	
+	2021 Karmotrine Dream
+	
+
+    </div>
+    
+</div><div id="extraContainer" class="extra-container">
+    
+    
+    <div class="toc animated-visibility" :class="{ invisible: scrollY <= 140 }">
+
+
+	<div class="toc-content">
+	
+		
+		
+		
+		<center>- CATALOG -</center>
+		
+		
+		<ul>
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#tldr" onclick="onNavClick(`#tldr-nav`)" id="tldr-nav">
+									TL;DR
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								
+									<ul>
+								
+							
+						
+						
+							<li>
+								<a href="#ps" onclick="onNavClick(`#ps-nav`)" id="ps-nav">
+									P.S.
+								</a>
+							</li>
+						
+						
+					
+				
+			
+		</ul>
+	</div>
+
+</div>
+    
+    <div class="pagination">
+        <a id="globalBackToTop" class="pagination-action animated-visibility" href="#top" :class="{ invisible: scrollY == 0 }">
+            <i class="material-icons pagination-action-icon">
+                keyboard_arrow_up
+            </i>
+        </a>
+        
+        <a type="button" class="pagination-action" id="darkModeToggleButton">
+            <span class="material-icons pagination-action-icon" id="darkModeToggleIcon">
+                dark_mode
+            </span>
+        </a>
+        
+        
+    </div>
+</div>
+<div class="single-column-drawer-container" id="drawer"
+     v-bind:class="{ 'single-column-drawer-container-active': isDrawerOpen }">
+    <div class="drawer-content">
+        <div class="drawer-menu">
+            
+            
+            
+                
+                
+                
+                
+                
+                <a class="a-block drawer-menu-item false" href="/posts">
+                    Archive
+                </a>
+                
+            
+                
+                
+                
+                
+                
+                <a class="a-block drawer-menu-item false" href="/categories">
+                    Categories
+                </a>
+                
+            
+                
+                
+                
+                
+                
+                <a class="a-block drawer-menu-item false" href="/tags">
+                    Tags
+                </a>
+                
+            
+                
+                
+                
+                
+                
+                <a class="a-block drawer-menu-item false" href="/index.xml">
+                    RSS Feed
+                </a>
+                
+            
+            
+            <div class="toc">
+
+
+	<div class="toc-content">
+	
+		
+		
+		
+		<center>- CATALOG -</center>
+		
+		
+		<ul>
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#tldr" onclick="onNavClick(`#tldr-nav`)" id="tldr-nav">
+									TL;DR
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								
+									<ul>
+								
+							
+						
+						
+							<li>
+								<a href="#ps" onclick="onNavClick(`#ps-nav`)" id="ps-nav">
+									P.S.
+								</a>
+							</li>
+						
+						
+					
+				
+			
+		</ul>
+	</div>
+
+</div>
+            
+        </div>
+    </div>
+</div>
+<transition name="fade">
+    <div id="drawer-mask" v-bind:class="{ 'single-column-drawer-mask': mounted }" v-if="isDrawerOpen" v-on:click="toggleDrawer"></div>
+</transition>
+<nav id="navBar" class="navbar sticky-top navbar-light single-column-nav-container">
+    <div id="navBackground" class="nav-background"></div>
+    <div class="container container-narrow nav-content">
+        <button id="nav_dropdown_btn" class="nav-dropdown-toggle" type="button" v-on:click="toggleDrawer">
+            <i class="material-icons">
+                menu
+            </i>
+        </button>
+        <a id="navTitle" class="navbar-brand" href="/">
+            Karmotrine Dream
+        </a>
+        
+        <button type="button" class="nav-darkmode-toggle" id="darkModeToggleButton2">
+            <i class="material-icons" id="darkModeToggleIcon2">
+                dark_mode
+            </i>
+        </button>
+        
+    </div>
+</nav>
+<div class="single-column-header-container" id="pageHead"
+     v-bind:style="{ transform: 'translateZ(0px) translateY('+.3*scrollY+'px)', opacity: 1-navOpacity }">
+    <a href="/">
+        <div class="single-column-header-title">Karmotrine Dream</div>
+        
+
+    </a>
+</div>
+
+            <div id="content">
+                <div id="streamContainer" class="stream-container">
+
+    <div class="post-list-container post-list-container-shadow">
+        <div class="post">
+            
+            
+            
+
+            <div class="post-head-wrapper-text-only"
+                
+            >
+                <div class="post-title">
+                    Documenting R SCENIC installation
+                    
+                    <div class="post-meta">
+                        
+                        <time itemprop="datePublished">
+                            2021-12-22 12:32
+                        </time>
+                        
+
+                        
+                            <i class="material-icons" style="">folder</i>
+                                <a href="/categories/">[Tech]</a>
+                                &nbsp;
+                        
+
+                        
+                            <i class="material-icons" style="">label</i>
+                            
+                                <a href="/tags/single-cell-biology">Single Cell Biology</a>
+                                &nbsp;
+                            
+                                <a href="/tags/ubuntu">Ubuntu</a>
+                                &nbsp;
+                            
+                                <a href="/tags/scenic">SCENIC</a>
+                                &nbsp;
+                            
+                        
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="post-body-wrapper">
+                
+                <div class="post-body" v-pre>
+                
+                    <h1 id="tldr">TL;DR</h1>
+<p>First consulted <a href="http://htmlpreview.github.io/?https://github.com/aertslab/SCENIC/blob/master/inst/doc/SCENIC_Setup.html">this page</a></p>
+<p>I have <code>R-4.0.5</code> with <code>Bioconductor 3.12(4.0)</code>, use the latest scripts for installation.</p>
+<p>In Rstudio:</p>
+<pre tabindex="0"><code>&gt; if (!requireNamespace(&quot;BiocManager&quot;, quietly = TRUE)) install.packages(&quot;BiocManager&quot;)
+&gt; BiocManager::version()
+&gt; # If your bioconductor version is previous to 4.0, see the section bellow
+&gt; 
+&gt; ## Required
+&gt; BiocManager::install(c(&quot;AUCell&quot;, &quot;RcisTarget&quot;))
+&gt; BiocManager::install(c(&quot;GENIE3&quot;)) # Optional. Can be replaced by GRNBoost
+&gt; 
+&gt; ## Optional (but highly recommended):
+&gt; # To score the network on cells (i.e. run AUCell):
+&gt; BiocManager::install(c(&quot;zoo&quot;, &quot;mixtools&quot;, &quot;rbokeh&quot;))
+&gt; # For various visualizations and perform t-SNEs:
+&gt; BiocManager::install(c(&quot;DT&quot;, &quot;NMF&quot;, &quot;ComplexHeatmap&quot;, &quot;R2HTML&quot;, &quot;Rtsne&quot;))
+&gt; # To support paralell execution (not available in Windows):
+&gt; BiocManager::install(c(&quot;doMC&quot;, &quot;doRNG&quot;))
+&gt; &gt; # To export/visualize in http://scope.aertslab.org
+&gt; if (!requireNamespace(&quot;devtools&quot;, quietly = TRUE)) install.packages(&quot;devtools&quot;)
+&gt; devtools::install_github(&quot;aertslab/SCopeLoomR&quot;, build_vignettes = TRUE)
+</code></pre><p>These worked fine.</p>
+<p>Then, when installing SCENIC using <code>devtools</code>:</p>
+<pre tabindex="0"><code>&gt; if (!requireNamespace(&quot;devtools&quot;, quietly = TRUE)) install.packages(&quot;devtools&quot;)
+&gt; devtools::install_github(&quot;aertslab/SCENIC&quot;) 
+Downloading GitHub repo aertslab/SCENIC@HEAD
+Error in utils::download.file(url, path, method = method, quiet = quiet,  : 
+  download from 'https://api.github.com/repos/aertslab/SCENIC/tarball/HEAD' failed
+</code></pre><p>Tried several times with no success.</p>
+<p>There are some discussions on this behavior with <code>devtools</code> and <code>remotes</code>, for example this <a href="https://github.com/r-lib/remotes/issues/130">issue</a>, but I find it un-straightforward.</p>
+<p>Instead, I decided to switch to SCENIC(R) github page and install directly from there.
+First tried directly cloning the repo:</p>
+<pre tabindex="0"><code>$ git clone https://github.com/aertslab/SCENIC.git
+Cloning into 'SCENIC'...
+fatal: unable to access 'https://github.com/aertslab/SCENIC.git/': Could not resolve host: github.com
+</code></pre><p>This also failed!</p>
+<p>Then tried <code>Download ZIP</code> to local and unzip <code>SCENIC-master.zip</code>. Create a new project in Rstudio from the directory containing SCENIC build and hit the <code>Install and Restart</code> button.</p>
+<p>This also failed because of an error of the sort &ldquo;Dependency &lsquo;dynamicTreeCut&rsquo; not available&rdquo;, but this won&rsquo;t be very difficult to solve.</p>
+<p>Install <code>dynamicTreeCut</code> manually:</p>
+<pre tabindex="0"><code>&gt; install.packages(&quot;dynamicTreeCut&quot;)
+Warning in install.packages :
+  unable to access index for repository https://cran.rstudio.com/src/contrib:
+  cannot open URL 'https://cran.rstudio.com/src/contrib/PACKAGES'
+Installing package into ‘/home/luolab/R/x86_64-pc-linux-gnu-library/4.0’
+(as ‘lib’ is unspecified)
+Warning in install.packages :
+  unable to access index for repository https://cran.rstudio.com/src/contrib:
+  cannot open URL 'https://cran.rstudio.com/src/contrib/PACKAGES'
+Warning in install.packages :
+  package ‘dynamicTreeCut’ is not available for this version of R
+
+A version of this package for your version of R might be available elsewhere,
+see the ideas at
+https://cran.r-project.org/doc/manuals/r-patched/R-admin.html#Installing-packages
+</code></pre><p>To <a href="https://community.rstudio.com/t/install-packages-unable-to-access-index-for-repository-try-disabling-secure-download-method-for-http/16578">fix this</a>, in Rstudio go to <code>Tools</code> &gt; <code>Global Options</code> &gt; <code>Packages</code> and <strong>Uncheck</strong> <code>Use secure download method for HTTP</code>. Then:</p>
+<pre tabindex="0"><code>&gt; install.packages(&quot;dynamicTreeCut&quot;)
+Installing package into ‘/home/luolab/R/x86_64-pc-linux-gnu-library/4.0’
+(as ‘lib’ is unspecified)
+trying URL 'http://cran.rstudio.com/src/contrib/dynamicTreeCut_1.63-1.tar.gz'
+Content type 'application/x-gzip' length 24027 bytes (23 KB)
+==================================================
+downloaded 23 KB
+
+* installing *source* package ‘dynamicTreeCut’ ...
+** package ‘dynamicTreeCut’ successfully unpacked and MD5 sums checked
+** using staged installation
+** R
+** byte-compile and prepare package for lazy loading
+** help
+*** installing help indices
+** building package indices
+** testing if installed package can be loaded from temporary location
+** testing if installed package can be loaded from final location
+** testing if installed package keeps a record of temporary installation path
+* DONE (dynamicTreeCut)
+
+The downloaded source packages are in
+	‘/tmp/RtmpgfV9Bj/downloaded_packages’
+</code></pre><p>Success!</p>
+<p>Now <code>Install and Restart</code> SCENIC again and everything worked.</p>
+<p>Next job is to import <code>pySCENIC</code> results to R <code>SCENIC</code>, consult the followings:</p>
+<ul>
+<li><a href="https://github.com/aertslab/pySCENIC/issues/180">Github issue discussion</a></li>
+<li><a href="https://rawcdn.githack.com/aertslab/SCENIC/0a4c96ed8d930edd8868f07428090f9dae264705/inst/doc/importing_pySCENIC.html">Vignette</a></li>
+</ul>
+<h2 id="ps">P.S.</h2>
+<p>When trying to push this post to github remote, failed again&hellip;</p>
+<pre tabindex="0"><code>$ git push -u --all
+fatal: unable to access 'https://github.com/RuiyuRayWang/blog.git/': Could not resolve host: github.com
+</code></pre><p>Looks like we&rsquo;re having a bad day with github server&hellip;</p>
+
+                    
+                    <HR width="100%" id="EOF">
+		    <p style="color:#777;">Last modified on 2021-12-22</p>
+                    
+                </div>
+            </div>
+            
+            
+            <nav class="post-pagination">
+
+                
+                <a class="newer-posts">
+			Next<br>No newer posts.
+                </a>
+                
+                
+                
+                <a class="older-posts" href="/post/using-scenic/">
+			Previous<br>Working with pySCENIC
+                </a>
+                
+            </nav>
+            <div class="post-comment-wrapper">
+                
+
+
+
+
+
+
+
+
+
+
+            </div>
+        </div>
+    </div>
+
+
+                    </div>
+            </div><div id="single-column-footer">
+Hugo Theme <a href="https://github.com/amazingrise/hugo-theme-diary">Diary</a> by <a href="https://amazingrise.net">Rise</a>
+<br>
+Ported from <a href="https://mak1t0.cc/" target="_blank" rel="noreferrer noopener">Makito</a>'s <a href="https://github.com/SumiMakito/hexo-theme-journal/" target="_blank" rel="noreferrer noopener">Journal.</a> <br>
+<br>
+
+&copy;
+	
+	2021 Karmotrine Dream
+	
+</div>
+            </div>
+    
+    <script src="/js/journal.js"></script>
+    </body>
+</html>

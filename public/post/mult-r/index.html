@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html><head>
+<title>Clean Built of Multiple R Versions on Ubuntu</title>
+
+
+
+
+<meta charset="utf-8">
+<meta name="X-UA-Compatible" content="IE=edge">
+<meta name="google-site-verification" content="">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+<meta content="telephone=no" name="format-detection">
+<meta name="description" content="">
+<meta name="renderer" content="webkit">
+<meta name="theme-color" content="#ffffff">
+
+
+
+<meta property="og:title" content="Clean Built of Multiple R Versions on Ubuntu" />
+<meta property="og:description" content="Long time ago I built R-4.0.3 on Ubuntu system following these guides: link1, link2. Briefly, I added GPG Key to APT (Advanced Package Tool) and added CRAN repository and directly retrieved R by apt.
+$ sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 $ sudo add-apt-repository &#39;deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran40/&#39; $ sudo apt update $ sudo apt install r-base Recently, I ran into an issue with cellassign when analyzing single cell datasets. I suspected that reverting to previous R versions might resolve the problem." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/mult-r/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-12-02T19:54:09+08:00" />
+<meta property="article:modified_time" content="2021-12-02T19:54:09+08:00" /><meta property="og:site_name" content="My Blog" />
+
+
+
+
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Clean Built of Multiple R Versions on Ubuntu"/>
+<meta name="twitter:description" content="Long time ago I built R-4.0.3 on Ubuntu system following these guides: link1, link2. Briefly, I added GPG Key to APT (Advanced Package Tool) and added CRAN repository and directly retrieved R by apt.
+$ sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 $ sudo add-apt-repository &#39;deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran40/&#39; $ sudo apt update $ sudo apt install r-base Recently, I ran into an issue with cellassign when analyzing single cell datasets. I suspected that reverting to previous R versions might resolve the problem."/>
+
+
+
+
+
+
+
+<link type="text/css" rel="stylesheet" href="/vendor/css/bootstrap.min.css">
+
+
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/scss/journal.min.3f72a5fc8f5b5dd732a4b476aced0eece2156958d9d414316494ddb10593ddf7.css" integrity="sha256-P3Kl/I9bXdcypLR2rO0O7OIVaVjZ1BQxZJTdsQWT3fc=" media="screen">
+
+
+
+<link rel="stylesheet" href="/scss/dark-mode.min.f7c2efa7183435a6bd1842f91c541481c7a5137b5991629a870f24e4a516ad4b.css" integrity="sha256-98Lvpxg0Naa9GEL5HFQUgcelE3tZkWKahw8k5KUWrUs=" media="screen">
+
+
+<script src="/vendor/js/loadCSS.js"></script>
+<script>
+  loadCSS("https://fonts.googleapis.com/css?family=Fira+Mono|Material+Icons");
+</script>
+
+
+
+
+
+
+  <script src="/js/toc.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+    	<div id="app"><div id="sideContainer" class="side-container">
+    
+    <a class="a-block nav-head false" href="/">
+    
+        <div class="nav-title">
+            Karmotrine Dream
+        </div>
+        
+    </a>
+
+    <div class="nav-link-list">
+        
+        
+            
+            
+            
+            
+            
+            <a class="a-block nav-link-item false" href="/posts">
+                Archive
+            </a>
+            
+        
+            
+            
+            
+            
+            
+            <a class="a-block nav-link-item false" href="/categories">
+                Categories
+            </a>
+            
+        
+            
+            
+            
+            
+            
+            <a class="a-block nav-link-item false" href="/tags">
+                Tags
+            </a>
+            
+        
+            
+            
+            
+            
+            
+            <a class="a-block nav-link-item false" href="/index.xml">
+                RSS Feed
+            </a>
+            
+        
+    </div>
+
+    
+
+    <div class="nav-footer">
+        
+Hugo Theme <a href="https://github.com/amazingrise/hugo-theme-diary">Diary</a> by <a href="https://amazingrise.net">Rise</a>
+<br>
+Ported from <a href="https://mak1t0.cc/" target="_blank" rel="noreferrer noopener">Makito</a>'s <a href="https://github.com/SumiMakito/hexo-theme-journal/" target="_blank" rel="noreferrer noopener">Journal.</a> <br>
+<br>
+
+&copy;
+	
+	2021 Karmotrine Dream
+	
+
+    </div>
+    
+</div><div id="extraContainer" class="extra-container">
+    
+    
+    <div class="toc animated-visibility" :class="{ invisible: scrollY <= 140 }">
+
+
+	<div class="toc-content">
+	
+		
+		
+		
+		<center>- CATALOG -</center>
+		
+		
+		<ul>
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								
+									<ul>
+								
+							
+						
+						
+							<li>
+								<a href="#uninstall-previously-built-r-versions" onclick="onNavClick(`#uninstall-previously-built-r-versions-nav`)" id="uninstall-previously-built-r-versions-nav">
+									Uninstall previously built R versions
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#install-r-from-precompiled-binaries" onclick="onNavClick(`#install-r-from-precompiled-binaries-nav`)" id="install-r-from-precompiled-binaries-nav">
+									Install R from precompiled binaries
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#switching-between-r-versions" onclick="onNavClick(`#switching-between-r-versions-nav`)" id="switching-between-r-versions-nav">
+									Switching between R versions
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								
+									<ul>
+								
+							
+						
+						
+							<li>
+								<a href="#method-1" onclick="onNavClick(`#method-1-nav`)" id="method-1-nav">
+									Method 1
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#method-2" onclick="onNavClick(`#method-2-nav`)" id="method-2-nav">
+									Method 2
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+							
+								</ul>
+							
+						
+						
+						
+							<li>
+								<a href="#2021123-updates" onclick="onNavClick(`#2021123-updates-nav`)" id="2021123-updates-nav">
+									2021.12.3 Updates:
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#references" onclick="onNavClick(`#references-nav`)" id="references-nav">
+									References:
+								</a>
+							</li>
+						
+						
+					
+				
+			
+		</ul>
+	</div>
+
+</div>
+    
+    <div class="pagination">
+        <a id="globalBackToTop" class="pagination-action animated-visibility" href="#top" :class="{ invisible: scrollY == 0 }">
+            <i class="material-icons pagination-action-icon">
+                keyboard_arrow_up
+            </i>
+        </a>
+        
+        <a type="button" class="pagination-action" id="darkModeToggleButton">
+            <span class="material-icons pagination-action-icon" id="darkModeToggleIcon">
+                dark_mode
+            </span>
+        </a>
+        
+        
+    </div>
+</div>
+<div class="single-column-drawer-container" id="drawer"
+     v-bind:class="{ 'single-column-drawer-container-active': isDrawerOpen }">
+    <div class="drawer-content">
+        <div class="drawer-menu">
+            
+            
+            
+                
+                
+                
+                
+                
+                <a class="a-block drawer-menu-item false" href="/posts">
+                    Archive
+                </a>
+                
+            
+                
+                
+                
+                
+                
+                <a class="a-block drawer-menu-item false" href="/categories">
+                    Categories
+                </a>
+                
+            
+                
+                
+                
+                
+                
+                <a class="a-block drawer-menu-item false" href="/tags">
+                    Tags
+                </a>
+                
+            
+                
+                
+                
+                
+                
+                <a class="a-block drawer-menu-item false" href="/index.xml">
+                    RSS Feed
+                </a>
+                
+            
+            
+            <div class="toc">
+
+
+	<div class="toc-content">
+	
+		
+		
+		
+		<center>- CATALOG -</center>
+		
+		
+		<ul>
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								
+									<ul>
+								
+							
+						
+						
+							<li>
+								<a href="#uninstall-previously-built-r-versions" onclick="onNavClick(`#uninstall-previously-built-r-versions-nav`)" id="uninstall-previously-built-r-versions-nav">
+									Uninstall previously built R versions
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#install-r-from-precompiled-binaries" onclick="onNavClick(`#install-r-from-precompiled-binaries-nav`)" id="install-r-from-precompiled-binaries-nav">
+									Install R from precompiled binaries
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#switching-between-r-versions" onclick="onNavClick(`#switching-between-r-versions-nav`)" id="switching-between-r-versions-nav">
+									Switching between R versions
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								
+									<ul>
+								
+							
+						
+						
+							<li>
+								<a href="#method-1" onclick="onNavClick(`#method-1-nav`)" id="method-1-nav">
+									Method 1
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#method-2" onclick="onNavClick(`#method-2-nav`)" id="method-2-nav">
+									Method 2
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+							
+								</ul>
+							
+						
+						
+						
+							<li>
+								<a href="#2021123-updates" onclick="onNavClick(`#2021123-updates-nav`)" id="2021123-updates-nav">
+									2021.12.3 Updates:
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#references" onclick="onNavClick(`#references-nav`)" id="references-nav">
+									References:
+								</a>
+							</li>
+						
+						
+					
+				
+			
+		</ul>
+	</div>
+
+</div>
+            
+        </div>
+    </div>
+</div>
+<transition name="fade">
+    <div id="drawer-mask" v-bind:class="{ 'single-column-drawer-mask': mounted }" v-if="isDrawerOpen" v-on:click="toggleDrawer"></div>
+</transition>
+<nav id="navBar" class="navbar sticky-top navbar-light single-column-nav-container">
+    <div id="navBackground" class="nav-background"></div>
+    <div class="container container-narrow nav-content">
+        <button id="nav_dropdown_btn" class="nav-dropdown-toggle" type="button" v-on:click="toggleDrawer">
+            <i class="material-icons">
+                menu
+            </i>
+        </button>
+        <a id="navTitle" class="navbar-brand" href="/">
+            Karmotrine Dream
+        </a>
+        
+        <button type="button" class="nav-darkmode-toggle" id="darkModeToggleButton2">
+            <i class="material-icons" id="darkModeToggleIcon2">
+                dark_mode
+            </i>
+        </button>
+        
+    </div>
+</nav>
+<div class="single-column-header-container" id="pageHead"
+     v-bind:style="{ transform: 'translateZ(0px) translateY('+.3*scrollY+'px)', opacity: 1-navOpacity }">
+    <a href="/">
+        <div class="single-column-header-title">Karmotrine Dream</div>
+        
+
+    </a>
+</div>
+
+            <div id="content">
+                <div id="streamContainer" class="stream-container">
+
+    <div class="post-list-container post-list-container-shadow">
+        <div class="post">
+            
+            
+            
+
+            <div class="post-head-wrapper-text-only"
+                
+            >
+                <div class="post-title">
+                    Clean Built of Multiple R Versions on Ubuntu
+                    
+                    <div class="post-meta">
+                        
+                        <time itemprop="datePublished">
+                            2021-12-02 19:54
+                        </time>
+                        
+
+                        
+                            <i class="material-icons" style="">folder</i>
+                                <a href="/categories/">[Tech]</a>
+                                &nbsp;
+                        
+
+                        
+                            <i class="material-icons" style="">label</i>
+                            
+                                <a href="/tags/r">R</a>
+                                &nbsp;
+                            
+                                <a href="/tags/rstudio">Rstudio</a>
+                                &nbsp;
+                            
+                                <a href="/tags/ubuntu">Ubuntu</a>
+                                &nbsp;
+                            
+                        
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="post-body-wrapper">
+                
+                <div class="post-body" v-pre>
+                
+                    <p>Long time ago I built R-4.0.3 on Ubuntu system following these guides: <a href="https://www.digitalocean.com/community/tutorials/how-to-install-r-on-ubuntu-18-04-quickstart">link1</a>, <a href="https://cran.r-project.org/bin/linux/ubuntu/">link2</a>. Briefly, I added GPG Key to APT (Advanced Package Tool) and added <code>CRAN</code> repository and directly retrieved R by <code>apt</code>.</p>
+<pre tabindex="0"><code>$ sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
+$ sudo add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran40/'
+$ sudo apt update
+$ sudo apt install r-base
+</code></pre><p>Recently, I ran into an issue with <a href="https://github.com/Irrationone/cellassign"><code>cellassign</code></a> when analyzing single cell datasets. I suspected that reverting to previous R versions might <a href="https://github.com/Irrationone/cellassign/issues/92">resolve the problem</a>.</p>
+<p>Plus, the GPG key added earlier is raising errors everytime I invoke <code>sudo apt update</code>, which is quite annoying. So I figured it might be better to build R from source.</p>
+<h2 id="uninstall-previously-built-r-versions">Uninstall previously built R versions</h2>
+<p>First check GPG Keys added by previous R built and remove it.</p>
+<pre tabindex="0"><code>$ sudo apt-key list
+</code></pre><pre tabindex="0"><code>pub   rsa4096 2019-06-11 [SC]
+      4A0C 1931 1880 3EB4 A561  E569 B3CF 35C3 15B5 5A9F
+uid           [ unknown] Launchpad PPA for cran
+
+/etc/apt/trusted.gpg.d/ubuntu-keyring-2012-archive.gpg
+</code></pre><pre tabindex="0"><code>$ sudo apt-key del &quot;4A0C 1931 1880 3EB4 A561  E569 B3CF 35C3 15B5 5A9F&quot;
+</code></pre><p>Then remove <code>cran</code> repository from <code>apt</code> repository list:</p>
+<pre tabindex="0"><code>$ sudo vim /etc/apt/sources.list  # Manually edit, remove entries related to R or cran
+</code></pre><p>Before uninstalling R, we might want to check what packages are currently installed and back them up, in case they&rsquo;ll be needed later.</p>
+<pre tabindex="0"><code>$ R
+R version 4.0.3 (2020-10-10) -- &quot;Bunny-Wunnies Freak Out&quot;
+Copyright (C) 2020 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+&gt; .libPaths()
+[1] &quot;/home/luolab/R/x86_64-pc-linux-gnu-library/4.0&quot;
+[2] &quot;/usr/local/lib/R/site-library&quot;
+[3] &quot;/usr/lib/R/site-library&quot; # This one is empty
+[4] &quot;/usr/lib/R/library&quot;
+</code></pre><p>In shell, backup the content listed in these paths.</p>
+<pre tabindex="0"><code>$ cp -r /home/luolab/R/x86_64-pc-linux-gnu-library/ /media/luolab/4A9623FA9623E563/R_bak/home.luolab.R.x86_64-pc-linux-gnu-library  # Moving to 120G SSD
+$ cp -r /usr/local/lib/R/site-library/ /media/luolab/4A9623FA9623E563/R_bak/usr.local.lib.R.site-library
+$ cp -r /usr/lib/R/library/ /media/luolab/4A9623FA9623E563/R_bak/usr.lib.R.library
+</code></pre><p>Now actually uninstall R. In shell, do:</p>
+<pre tabindex="0"><code>$ sudo apt-get --purge remove r-base-core
+$ sudo apt-get autoremove
+</code></pre><p>Make sure R is properly removed:</p>
+<pre tabindex="0"><code>$ R
+
+Command 'R' not found, but can be installed with:
+
+sudo apt install r-base-core
+</code></pre><h2 id="install-r-from-precompiled-binaries">Install R from precompiled binaries</h2>
+<p>I will use the method listed in this page for installation of R:
+<a href="https://docs.rstudio.com/resources/install-r/"><strong>Install R</strong></a>*</p>
+<p>As a prerequisite, enable additional repositories for third-party or source packages:</p>
+<pre tabindex="0"><code>$ sudo apt-get update
+$ sudo apt-get install gdebi-core
+</code></pre><p>Specify R version.</p>
+<pre tabindex="0"><code>export R_VERSION=4.0.5
+</code></pre><p>Download and install the desired version of R.</p>
+<pre tabindex="0"><code>curl -O https://cdn.rstudio.com/r/ubuntu-1804/pkgs/r-${R_VERSION}_1_amd64.deb
+sudo gdebi r-${R_VERSION}_1_amd64.deb
+</code></pre><p>Verify R installation:</p>
+<pre tabindex="0"><code>/opt/R/${R_VERSION}/bin/R --version
+</code></pre><p>To ensure that R is available on the default system <code>PATH</code> variable, create symbolic links to the version of R just installed.</p>
+<pre tabindex="0"><code>sudo ln -s /opt/R/${R_VERSION}/bin/R /usr/local/bin/R
+sudo ln -s /opt/R/${R_VERSION}/bin/Rscript /usr/local/bin/Rscript
+</code></pre><p>Next, time to install multiple versions of R. Repeat the above steps to specify, download, and install a different version of R alongside existing versions.
+I re-configured with <code>export R_VERSION=3.6.2</code> and executed the steps above to have R-3.6.2 installed.</p>
+<h2 id="switching-between-r-versions">Switching between R versions</h2>
+<h3 id="method-1">Method 1</h3>
+<p>The tutorial has a note at the symlink step, saying:</p>
+<blockquote>
+<p>This step only applies to the first installation of R on a given system. For subsequent installations, this section should be skipped.</p>
+</blockquote>
+<p>I suspect that overriding the symlink with later installed R versions would allow switching between different R versions. So I did:</p>
+<pre tabindex="0"><code>$ export R_VERSION=3.6.2
+$ sudo rm /usr/local/bin/R /usr/local/bin/Rscript
+$ sudo ln -s /opt/R/${R_VERSION}/bin/R /usr/local/bin/R  # ${R_VERSION}=3.6.2
+$ sudo ln -s /opt/R/${R_VERSION}/bin/Rscript /usr/local/bin/Rscript
+</code></pre><p>After doing this, R indeed switched to 3.6.2, which is my desired version.</p>
+<pre tabindex="0"><code>$ which R
+/usr/local/bin/R
+$ file /usr/local/bin/R
+/usr/local/bin/R: symbolic link to /opt/R/3.6.2/bin/R
+$ R --version
+R version 3.6.2 (2020-02-29) -- &quot;Holding the Windsock&quot;
+Copyright (C) 2020 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+</code></pre><h3 id="method-2">Method 2</h3>
+<p>Another way of switching between different R versions is to get <code>Rstudio</code> recognize different R executables.
+Referring to this post: <a href="https://support.rstudio.com/hc/en-us/articles/200486138-Changing-R-versions-for-the-RStudio-Desktop-IDE">Changing R versions for the RStudio Desktop IDE</a>, we know that on Linux systems, <code>Rstudio</code> use the version of R pointed to by the output of <code>which R</code>.</p>
+<p>To override which version of R is used, we set <code>RSTUDIO_WHICH_R</code> environment variable to the R executable that we want to run against. For example, in terminal:</p>
+<pre tabindex="0"><code>$ export RSTUDIO_WHICH_R=/opt/R/3.6.2/bin/R
+</code></pre><p>And within the same terminal, launch Rstudio by typing:</p>
+<pre tabindex="0"><code>$ rstudio
+</code></pre><p>Because the <code>RSTUDIO_WHICH_R</code> is a temporary variable, it is only available in the activated shell instance. Calling <code>rstudio</code> in a new terminal will still point to the default R executable, which in our case is <code>/usr/local/bin/R</code>, which ,by default, points to <code>/opt/R/4.0.5/bin/R</code>.</p>
+<p>Now that we can work with multiple R versions, it&rsquo;s time to build some R packages. Hopefully <code>cellassign</code> can be run properly this time.</p>
+<p><code>cellassign</code> depends on tensorflow which is another nasty built experience. I&rsquo;ll write about it next time.</p>
+<h2 id="2021123-updates">2021.12.3 Updates:</h2>
+<p>Previously in this post I installed R-3.6.3. Now I strongly discourage this practice. For configuration of <code>cellassign</code>, build <code>R-3.6.2</code> instead of <code>R-3.6.3</code>, because some of the package dependencies (<code>RcppAnnoy</code>) has <a href="https://github.com/LTLA/BiocNeighbors/issues/17">bad compatibility with <code>R-3.6.3</code></a>.</p>
+<p>It turns out that <code>cellassign</code> still fails after reverting to R-3.6.3!</p>
+<p>The error encountered with <code>cellassign</code> turns out to be a compatibility issue of R <code>tensorflow</code>. To avoid the error, build R <code>tensorflow</code> with <code>devtools</code> and explicitly specify a version. See this <a href="https://github.com/Irrationone/cellassign/issues/94">issue</a>.</p>
+<h2 id="references">References:</h2>
+<p><a href="https://docs.rstudio.com/resources/install-r/"><strong>Install R</strong></a>*</p>
+<p><a href="https://support.rstudio.com/hc/en-us/articles/215488098-Installing-multiple-versions-of-R-on-Linux"><strong>Installing multiple versions of R on Linux</strong></a>*</p>
+<p><a href="https://cran.r-project.org/doc/manuals/r-release/R-admin.html">R Installation and Administration</a></p>
+<p><a href="https://support.rstudio.com/hc/en-us/articles/212364537-Using-multiple-versions-of-R-with-RStudio-Workbench-RStudio-Server-Pro">Using multiple versions of R with RStudio Workbench / RStudio Server Pro</a></p>
+<p><a href="https://docs.rstudio.com/rspm/admin/appendix/system-dependency-detection/">System Dependency Detection</a></p>
+
+                    
+                    <HR width="100%" id="EOF">
+		    <p style="color:#777;">Last modified on 2021-12-02</p>
+                    
+                </div>
+            </div>
+            
+            
+            <nav class="post-pagination">
+
+                
+                <a class="newer-posts" href="/post/build-tensorflow/">
+			Next<br>Building Environments for Cellassign and CellBLAST with multiple GPU Supported Tensorflow Versions on Ubuntu
+                </a>
+                
+                
+                
+                <a class="older-posts" href="/post/frq-used/">
+			Previous<br>Frquently Used Softwares
+                </a>
+                
+            </nav>
+            <div class="post-comment-wrapper">
+                
+
+
+
+
+
+
+
+
+
+
+            </div>
+        </div>
+    </div>
+
+
+                    </div>
+            </div><div id="single-column-footer">
+Hugo Theme <a href="https://github.com/amazingrise/hugo-theme-diary">Diary</a> by <a href="https://amazingrise.net">Rise</a>
+<br>
+Ported from <a href="https://mak1t0.cc/" target="_blank" rel="noreferrer noopener">Makito</a>'s <a href="https://github.com/SumiMakito/hexo-theme-journal/" target="_blank" rel="noreferrer noopener">Journal.</a> <br>
+<br>
+
+&copy;
+	
+	2021 Karmotrine Dream
+	
+</div>
+            </div>
+    
+    <script src="/js/journal.js"></script>
+    </body>
+</html>

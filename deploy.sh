@@ -6,7 +6,7 @@ set -e
 printf "\033[0;32mDeploying updates to Github...\033[0m\n"
 
 # Build the project
-hugo -D -t hugo-theme-cleanwhite # or `hugo -D` if no theme is specified
+hugo -D -t diary # or `hugo -D` if no theme is specified
 
 # Go To Public folder
 cd ../public

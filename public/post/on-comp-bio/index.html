@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html><head>
+<title>So you want to be a computational biologist?</title>
+
+
+
+
+<meta charset="utf-8">
+<meta name="X-UA-Compatible" content="IE=edge">
+<meta name="google-site-verification" content="">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+<meta content="telephone=no" name="format-detection">
+<meta name="description" content="">
+<meta name="renderer" content="webkit">
+<meta name="theme-color" content="#ffffff">
+
+
+
+<meta property="og:title" content="So you want to be a computational biologist?" />
+<meta property="og:description" content="Recently I ran into this wonderful article published in Nature Biotechnology written by Nick Loman and Mick Watson, about how to become a computational biologist. The article is so brilliant and I thought I should dedicate my (actual) first post to write about it.
+Understand your goals and choose appropriate methods  Key to good computational biology is the selection and use of appropriate software. Before you can usefully interpret the output of a piece of software, you must understand what the software is doing." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/on-comp-bio/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-12-02T16:49:27+08:00" />
+<meta property="article:modified_time" content="2021-12-02T16:49:27+08:00" /><meta property="og:site_name" content="My Blog" />
+
+
+
+
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="So you want to be a computational biologist?"/>
+<meta name="twitter:description" content="Recently I ran into this wonderful article published in Nature Biotechnology written by Nick Loman and Mick Watson, about how to become a computational biologist. The article is so brilliant and I thought I should dedicate my (actual) first post to write about it.
+Understand your goals and choose appropriate methods  Key to good computational biology is the selection and use of appropriate software. Before you can usefully interpret the output of a piece of software, you must understand what the software is doing."/>
+
+
+
+
+
+
+
+<link type="text/css" rel="stylesheet" href="/vendor/css/bootstrap.min.css">
+
+
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/scss/journal.min.3f72a5fc8f5b5dd732a4b476aced0eece2156958d9d414316494ddb10593ddf7.css" integrity="sha256-P3Kl/I9bXdcypLR2rO0O7OIVaVjZ1BQxZJTdsQWT3fc=" media="screen">
+
+
+
+<link rel="stylesheet" href="/scss/dark-mode.min.f7c2efa7183435a6bd1842f91c541481c7a5137b5991629a870f24e4a516ad4b.css" integrity="sha256-98Lvpxg0Naa9GEL5HFQUgcelE3tZkWKahw8k5KUWrUs=" media="screen">
+
+
+<script src="/vendor/js/loadCSS.js"></script>
+<script>
+  loadCSS("https://fonts.googleapis.com/css?family=Fira+Mono|Material+Icons");
+</script>
+
+
+
+
+
+
+  <script src="/js/toc.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+    	<div id="app"><div id="sideContainer" class="side-container">
+    
+    <a class="a-block nav-head false" href="/">
+    
+        <div class="nav-title">
+            Karmotrine Dream
+        </div>
+        
+    </a>
+
+    <div class="nav-link-list">
+        
+        
+            
+            
+            
+            
+            
+            <a class="a-block nav-link-item false" href="/posts">
+                Archive
+            </a>
+            
+        
+            
+            
+            
+            
+            
+            <a class="a-block nav-link-item false" href="/categories">
+                Categories
+            </a>
+            
+        
+            
+            
+            
+            
+            
+            <a class="a-block nav-link-item false" href="/tags">
+                Tags
+            </a>
+            
+        
+            
+            
+            
+            
+            
+            <a class="a-block nav-link-item false" href="/index.xml">
+                RSS Feed
+            </a>
+            
+        
+    </div>
+
+    
+
+    <div class="nav-footer">
+        
+Hugo Theme <a href="https://github.com/amazingrise/hugo-theme-diary">Diary</a> by <a href="https://amazingrise.net">Rise</a>
+<br>
+Ported from <a href="https://mak1t0.cc/" target="_blank" rel="noreferrer noopener">Makito</a>'s <a href="https://github.com/SumiMakito/hexo-theme-journal/" target="_blank" rel="noreferrer noopener">Journal.</a> <br>
+<br>
+
+&copy;
+	
+	2021 Karmotrine Dream
+	
+
+    </div>
+    
+</div><div id="extraContainer" class="extra-container">
+    
+    
+    <div class="toc animated-visibility" :class="{ invisible: scrollY <= 140 }">
+
+
+	<div class="toc-content">
+	
+		
+		
+		
+		<center>- CATALOG -</center>
+		
+		
+		<ul>
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								
+									<ul>
+								
+							
+								
+									<ul>
+								
+							
+						
+						
+							<li>
+								<a href="#understand-your-goals-and-choose-appropriate-methods" onclick="onNavClick(`#understand-your-goals-and-choose-appropriate-methods-nav`)" id="understand-your-goals-and-choose-appropriate-methods-nav">
+									Understand your goals and choose appropriate methods
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#set-traps-for-your-own-scripts-and-other-peoples" onclick="onNavClick(`#set-traps-for-your-own-scripts-and-other-peoples-nav`)" id="set-traps-for-your-own-scripts-and-other-peoples-nav">
+									Set traps for your own scripts and other people’s
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#youre-a-scientist-not-a-programmer" onclick="onNavClick(`#youre-a-scientist-not-a-programmer-nav`)" id="youre-a-scientist-not-a-programmer-nav">
+									You’re a scientist, not a programmer
+								</a>
+							</li>
+						
+						
+					
+				
+			
+		</ul>
+	</div>
+
+</div>
+    
+    <div class="pagination">
+        <a id="globalBackToTop" class="pagination-action animated-visibility" href="#top" :class="{ invisible: scrollY == 0 }">
+            <i class="material-icons pagination-action-icon">
+                keyboard_arrow_up
+            </i>
+        </a>
+        
+        <a type="button" class="pagination-action" id="darkModeToggleButton">
+            <span class="material-icons pagination-action-icon" id="darkModeToggleIcon">
+                dark_mode
+            </span>
+        </a>
+        
+        
+    </div>
+</div>
+<div class="single-column-drawer-container" id="drawer"
+     v-bind:class="{ 'single-column-drawer-container-active': isDrawerOpen }">
+    <div class="drawer-content">
+        <div class="drawer-menu">
+            
+            
+            
+                
+                
+                
+                
+                
+                <a class="a-block drawer-menu-item false" href="/posts">
+                    Archive
+                </a>
+                
+            
+                
+                
+                
+                
+                
+                <a class="a-block drawer-menu-item false" href="/categories">
+                    Categories
+                </a>
+                
+            
+                
+                
+                
+                
+                
+                <a class="a-block drawer-menu-item false" href="/tags">
+                    Tags
+                </a>
+                
+            
+                
+                
+                
+                
+                
+                <a class="a-block drawer-menu-item false" href="/index.xml">
+                    RSS Feed
+                </a>
+                
+            
+            
+            <div class="toc">
+
+
+	<div class="toc-content">
+	
+		
+		
+		
+		<center>- CATALOG -</center>
+		
+		
+		<ul>
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								
+									<ul>
+								
+							
+								
+									<ul>
+								
+							
+						
+						
+							<li>
+								<a href="#understand-your-goals-and-choose-appropriate-methods" onclick="onNavClick(`#understand-your-goals-and-choose-appropriate-methods-nav`)" id="understand-your-goals-and-choose-appropriate-methods-nav">
+									Understand your goals and choose appropriate methods
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#set-traps-for-your-own-scripts-and-other-peoples" onclick="onNavClick(`#set-traps-for-your-own-scripts-and-other-peoples-nav`)" id="set-traps-for-your-own-scripts-and-other-peoples-nav">
+									Set traps for your own scripts and other people’s
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#youre-a-scientist-not-a-programmer" onclick="onNavClick(`#youre-a-scientist-not-a-programmer-nav`)" id="youre-a-scientist-not-a-programmer-nav">
+									You’re a scientist, not a programmer
+								</a>
+							</li>
+						
+						
+					
+				
+			
+		</ul>
+	</div>
+
+</div>
+            
+        </div>
+    </div>
+</div>
+<transition name="fade">
+    <div id="drawer-mask" v-bind:class="{ 'single-column-drawer-mask': mounted }" v-if="isDrawerOpen" v-on:click="toggleDrawer"></div>
+</transition>
+<nav id="navBar" class="navbar sticky-top navbar-light single-column-nav-container">
+    <div id="navBackground" class="nav-background"></div>
+    <div class="container container-narrow nav-content">
+        <button id="nav_dropdown_btn" class="nav-dropdown-toggle" type="button" v-on:click="toggleDrawer">
+            <i class="material-icons">
+                menu
+            </i>
+        </button>
+        <a id="navTitle" class="navbar-brand" href="/">
+            Karmotrine Dream
+        </a>
+        
+        <button type="button" class="nav-darkmode-toggle" id="darkModeToggleButton2">
+            <i class="material-icons" id="darkModeToggleIcon2">
+                dark_mode
+            </i>
+        </button>
+        
+    </div>
+</nav>
+<div class="single-column-header-container" id="pageHead"
+     v-bind:style="{ transform: 'translateZ(0px) translateY('+.3*scrollY+'px)', opacity: 1-navOpacity }">
+    <a href="/">
+        <div class="single-column-header-title">Karmotrine Dream</div>
+        
+
+    </a>
+</div>
+
+            <div id="content">
+                <div id="streamContainer" class="stream-container">
+
+    <div class="post-list-container post-list-container-shadow">
+        <div class="post">
+            
+            
+            
+
+            <div class="post-head-wrapper-text-only"
+                
+            >
+                <div class="post-title">
+                    So you want to be a computational biologist?
+                    
+                    <div class="post-meta">
+                        
+                        <time itemprop="datePublished">
+                            2021-12-02 16:49
+                        </time>
+                        
+
+                        
+                            <i class="material-icons" style="">folder</i>
+                                <a href="/categories/">[Comp bio]</a>
+                                &nbsp;
+                        
+
+                        
+                            <i class="material-icons" style="">label</i>
+                            
+                                <a href="/tags/journal">Journal</a>
+                                &nbsp;
+                            
+                                <a href="/tags/comp-bio">Comp bio</a>
+                                &nbsp;
+                            
+                                <a href="/tags/science">Science</a>
+                                &nbsp;
+                            
+                        
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="post-body-wrapper">
+                
+                <div class="post-body" v-pre>
+                
+                    <p>Recently I ran into this wonderful <a href="https://doi.org/10.1038/nbt.2740">article</a> published in Nature Biotechnology written by Nick Loman and Mick Watson, about how to become a computational biologist. The article is so brilliant and I thought I should dedicate my (actual) first post to write about it.</p>
+<h3 id="understand-your-goals-and-choose-appropriate-methods">Understand your goals and choose appropriate methods</h3>
+<blockquote>
+<p>Key to good computational biology is the selection and use of appropriate software. Before you can usefully interpret the output of a piece of software, you must understand what the software is doing. &hellip; Understanding the underlying methods and algorithms gives you the tools to interpret the results. That doesn’t mean you need to read through each line of source code, but you should have a grasp of the concepts.</p>
+</blockquote>
+<p>There is always more tools to choose from than we can actually use. Choose tools wisely. Define your work with words accurately and search carefully. Use well-maintained tools. Use tools with higher user base. High popularity of a tool usually indicates good maintenance. If you decide to use a less popular tool, know the risk: you may experience more bugs or even criticisms during publication.</p>
+<p>Understand what the tool is doing, but don&rsquo;t dive into the technical details too early. Having a good grasp of what the inputs and outputs are is usually enough for doing the job.</p>
+<p>Critically, one must also have a good understanding of the biological question at hand. No tool fits all problems. Under different scenarios, one may have to look for different tools to solve the problem.</p>
+<p>At a more advanced level,</p>
+<h3 id="set-traps-for-your-own-scripts-and-other-peoples">Set traps for your own scripts and other people’s</h3>
+<h3 id="youre-a-scientist-not-a-programmer">You’re a scientist, not a programmer</h3>
+<blockquote>
+<p>The perfect is the enemy of the good. Remember you are a scientist and the quality of your research is what is important, not how pretty your source code looks. Perfectly written, extensively documented, elegant code that gets the answer wrong is not as useful as a basic script that gets it right. Having said that, once you’re sure your core algorithm works, spend time making it elegant and documenting how to use it. Use your biological knowledge as much as possible—that’s what makes you a computational biologist.</p>
+</blockquote>
+<p>This is, for me, THE most important take home message.</p>
+<p>The first rule of being a computational biologicst, is that you should make the center of your work biology.</p>
+<p>Although officially doing my phD in a wet lab, I&rsquo;ve managed to train myself to become a &ldquo;bioinformatics/computational biology&rdquo; practitioner (thanks to the patience and resources put in by Minmin).
+Working my way over the years, I find that I&rsquo;ve been unconsciously forming a work-style that exactly matches the one described in Nick &amp; Mick&rsquo;s article.</p>
+
+                    
+                    <HR width="100%" id="EOF">
+		    <p style="color:#777;">Last modified on 2021-12-02</p>
+                    
+                </div>
+            </div>
+            
+            
+            <nav class="post-pagination">
+
+                
+                <a class="newer-posts" href="/post/frq-used/">
+			Next<br>Frquently Used Softwares
+                </a>
+                
+                
+                
+                <a class="older-posts" href="/post/my-first-post/">
+			Previous<br>My First Post
+                </a>
+                
+            </nav>
+            <div class="post-comment-wrapper">
+                
+
+
+
+
+
+
+
+
+
+
+            </div>
+        </div>
+    </div>
+
+
+                    </div>
+            </div><div id="single-column-footer">
+Hugo Theme <a href="https://github.com/amazingrise/hugo-theme-diary">Diary</a> by <a href="https://amazingrise.net">Rise</a>
+<br>
+Ported from <a href="https://mak1t0.cc/" target="_blank" rel="noreferrer noopener">Makito</a>'s <a href="https://github.com/SumiMakito/hexo-theme-journal/" target="_blank" rel="noreferrer noopener">Journal.</a> <br>
+<br>
+
+&copy;
+	
+	2021 Karmotrine Dream
+	
+</div>
+            </div>
+    
+    <script src="/js/journal.js"></script>
+    </body>
+</html>
