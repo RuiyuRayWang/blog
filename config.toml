@@ -4,7 +4,10 @@ languageCode = "en-us"
 title = "Karmotrine Dream"
 copyright = ""
 theme = "diary"
+publishDir = "../public"
 # googleAnalytics = "UA-123-45"
+
+
 
 [markup]
   [markup.highlight]

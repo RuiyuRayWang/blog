@@ -1,12 +1,8 @@
 ---
-title:       "Documenting R SCENIC installation"
-subtitle:    ""
-description: ""
+title:       "R SCENIC：安装与部署"
 date:        2021-12-22T12:32:17+08:00
-author:      Ruiyu Wang
-image:       ""
 tags:        ["Single Cell Biology", "Ubuntu", "SCENIC"]
-categories:  ["Tech" ]
+categories:  ["Bioinformatics" ]
 ---
 
 # TL;DR

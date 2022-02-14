@@ -1,13 +1,11 @@
 ---
-title:       "Building Environments for Cellassign and CellBLAST with multiple GPU Supported Tensorflow Versions on Ubuntu"
-subtitle:    "First Dive into Deep Learning"
-description: ""
+title:       "Tensorflow：多版本部署、系统配置与版本切换"
 date:        2021-12-05T22:57:25+08:00
-author:      Ruiyu Wang
-image:       ""
 tags:        ["Tensorflow", "Ubuntu", "Deep Learning", "Single Cell Biology"]
-categories:  ["Tech" ]
+categories:  ["Bioinformatics" ]
 ---
+
+# Building Environments for Cellassign and CellBLAST with multiple Tensorflow (GPU) Versions on Ubuntu
 
 As promised, I will write about my experience with installing tensorflow. 
 

@@ -1,13 +1,11 @@
 ---
-title:       "Clean Built of Multiple R Versions on Ubuntu"
-subtitle:    ""
-description: ""
+title:       "R：同时部署多版本 & 版本切换"
 date:        2021-12-02T19:54:09+08:00
-author:      Ruiyu Wang
-image:       ""
 tags:        ["R", "Rstudio", "Ubuntu"]
-categories:  ["Tech" ]
+categories:  ["Bioinformatics" ]
 ---
+
+# Clean Built of Multiple R Versions on Ubuntu
 
 Long time ago I built R-4.0.3 on Ubuntu system following these guides: [link1](https://www.digitalocean.com/community/tutorials/how-to-install-r-on-ubuntu-18-04-quickstart), [link2](https://cran.r-project.org/bin/linux/ubuntu/). Briefly, I added GPG Key to APT (Advanced Package Tool) and added `CRAN` repository and directly retrieved R by `apt`.
 ```

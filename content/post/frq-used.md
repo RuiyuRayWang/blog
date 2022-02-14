@@ -1,12 +1,12 @@
 ---
-title:       "Frquently Used Softwares"
+title:       "生物信息学&计算生物学 常用装机软件汇总整理"
 date:        2021-12-02T17:41:03+08:00
-author:      Ruiyu Wang
 tags:        []
-categories:  ["Tech" ]
+categories:  ["Bioinformatics" ]
 draft:       true
-type:        post
 ---
+
+（未完成，持续更新）
 
 Softwares used in works. Some require built from scratch.
 
