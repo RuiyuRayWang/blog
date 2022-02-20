@@ -4,21 +4,24 @@ date:        2021-12-02T16:49:27+08:00
 tags:        ["Paper", "Comp bio", "Bioinformatics"]
 categories:  ["Bioinformatics"]
 author:      Ruiyu Wang
-draft:       true
+draft:       false
 type:        post
 ---
 
-Nick Loman和Mick Watson在2013年写了一篇小短文发在NBT上，题为[*So you want to be a computational biologist?*](https://doi.org/10.1038/nbt.2740)
-文章短小精悍，非常精彩。很多细节能够看出作者是实打实的计算生物学从业者。值得大家阅读。
+Nick Loman和Mick Watson在2013年写了一篇Commentary发在NBT上，题为 [*So you want to be a computational biologist?*](https://doi.org/10.1038/nbt.2740)
 
-几句题外话：Nick Loman 79年生人，年轻时与其兄弟Rupert Loman沉迷电子游戏，后来二人发现相比于打游戏他们更擅长组织管理，于是合伙创立了公司Eurogamer Network，后者逐渐发展为欧洲最大的电子媒体之一Gamer Network。  
-2004年，Nick步入大学，跳出Eurogamer，一头扎进生命医学领域，开始了自己的学术生涯。这哥们后来科研做得风生水起，h-index高达50+，现任伯明翰大学Research Fellow（居然还不是教授...）。2018年，Gamer Network被出版巨头Reed收购。
+文章短小精悍，非常精彩。很多细节能够看出作者是实打实的计算生物学从业者，给出了很多中肯的建议。对于所有有志于从事计算生物学、生物信息学的人，这篇文章值得反复阅读。
+
+几句题外话：Nick Loman 79年生人，年轻时与其兄弟Rupert Loman沉迷电子游戏，后来二人发现比起打游戏他们更擅长组织管理，于是合伙创立了公司Eurogamer Network，后者逐渐发展为欧洲最大的电子媒体之一Gamer Network。  
+2004年，Nick步入大学，跳出Eurogamer，一头扎进生命医学领域，开始了自己的学术生涯。这哥们后来科研做得风生水起，h-index高达68，现任伯明翰大学教授（2017年转正 #Twitter）~Research Fellow（居然还不是教授...）~。2018年，Gamer Network被出版巨头Reed收购，说不定Nick利用自己学者身份从中斡旋了一番（没有实锤，我猜的）。
 
 Recently I ran into this wonderful [article](https://doi.org/10.1038/nbt.2740) published in Nature Biotechnology written by Nick Loman and Mick Watson, about how to become a computational biologist. The article is so brilliant and I thought I should dedicate my (actual) first post to write about it.
 
-I'll only put here excerptions of the article that I feel excited about. For full article, refer to the link above.
+I'll only put here excerptions of the article that I feel excited about. For full article, refer to the links above.
 
 ***
+
+>The term ‘computational biologist’ can encompass several roles, including data analyst, data curator, database developer, statistician, mathematical modeler, bioinformatician, software developer, ontologist — and many more. What’s clear is that computers are now essential components of modern biological research, and scientists are being asked to adopt new skills in computational biology and master new terminology. Whether you’re a student, a professor or somewhere in between, if you increasingly find that computational analysis is important to your research, follow the advice below and start along the road towards becoming a computational biologist!
 
 ## 1. Understand your goals and choose appropriate methods
 

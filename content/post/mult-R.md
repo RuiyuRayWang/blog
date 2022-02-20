@@ -17,7 +17,7 @@ $ sudo apt install r-base
 
 Recently, I ran into an issue with [`cellassign`](https://github.com/Irrationone/cellassign) when analyzing single cell datasets. I suspected that reverting to previous R versions might [resolve the problem](https://github.com/Irrationone/cellassign/issues/92).
 
-Plus, the GPG key added earlier is raising errors everytime I invoke `sudo apt update`, which is quite annoying. So I figured it might be better to build R from source.
+Plus, the GPG key added earlier is raising errors everytime I invoke `sudo apt update`, which is quite annoying. So I figured it might be better to re-build R from source.
 
 ## Uninstall previously built R versions
 

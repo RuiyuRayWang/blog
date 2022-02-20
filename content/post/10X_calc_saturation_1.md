@@ -14,6 +14,8 @@ categories:  ["Bioinformatics" ]
 
 将用两篇文章记录这部分内容。
 
+**注意：本系列文章的参考来源均为10X官方公开的信息。**
+
 这篇文章是本系列文章的第一篇，将对相关概念和计算公式的定义进行解读。
 
 ***
@@ -89,6 +91,8 @@ $$测序饱和度=1-\frac{去重后Reads数}{总Reads数}=\frac{重复Reads数}{
 
 从这个公式也可以看出，重复Reads数越高，冗余信息越多，测序饱和度也越高。
 
+该公式只计算了一个数值，代表某次测序fastq文件整个数据的测序饱和度。如果要实现10X CellRanger输出web_summary的中饱和度曲线的绘制，感觉还是比较麻烦的。理论上，需要对fastq文件做不同水平的降采样，再分别算测序饱和度。  
+目前还不清楚CellRanger是怎么实现一次alignment过程中输出不同测序深度下的测序饱和度的。
 
 [^1]: 全新的转录本，在10X官方文档的语境下，指的是一个全新的 Barcode + UMI 组合（i.e. a previously unobserved, unique combination of valid cell-barcode and valid UMI）
 [^2]: 直觉上这并不 make sense。原代细胞有较高的细胞异质性，如果其他条件相同，理应更难达到测序饱和。猜测也许是因为原代细胞分离下来细胞状态不如永生细胞，因此导致文库质量不佳。
