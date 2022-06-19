@@ -1,8 +1,8 @@
 ---
 title:       "R：同时部署多版本 & 版本切换"
 date:        2021-12-02T19:54:09+08:00
-tags:        ["R", "Rstudio", "Ubuntu"]
-categories:  ["Bioinformatics" ]
+tags:        ["R", "Ubuntu"]
+categories:  ["Coding" ]
 ---
 
 # Clean Built of Multiple R Versions on Ubuntu

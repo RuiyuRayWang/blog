@@ -1,8 +1,8 @@
 ---
 title:       "Tensorflow：多版本部署、系统配置与版本切换"
 date:        2021-12-05T22:57:25+08:00
-tags:        ["Tensorflow", "Ubuntu", "Deep Learning", "Single Cell Biology"]
-categories:  ["Bioinformatics" ]
+tags:        ["Tensorflow", "Ubuntu", "Machine Learning", "Single Cell Biology"]
+categories:  ["Coding" ]
 ---
 
 # Building Environments for Cellassign and CellBLAST with multiple Tensorflow (GPU) Versions on Ubuntu
