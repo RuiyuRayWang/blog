@@ -173,6 +173,13 @@ install.packages('extrafont')
 ```
 
 ```
+## Drop-utils
+BiocManager::install("DropletUtils")
+
+## Decontamination
+BiocManager::install("celda")  ## DecontX: a bit difficult to build
+install.packages("SoupX")  ## SoupX
+
 ## clusterProfiler
 BiocManager::install("clusterProfiler")
 
