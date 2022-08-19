@@ -31,8 +31,6 @@ docker run --rm --gpus all nvidia/cuda:11.0-base nvidia-smi
 
 ## Install `NVIDIA Container Toolkit`
 
-Core step is to install the `NVIDIA Container Toolkit`.
-
 Check [Platform requirements](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#platform-requirements)
 
 GNU/Linux x86_64 with kernel version > 3.10
@@ -93,6 +91,8 @@ Following [this](https://docs.docker.com/engine/install/ubuntu/) instruction to 
 ```
 $ sudo apt-get remove docker docker-engine docker.io containerd runc
 ```
+
+*NOTE: It’s OK if `apt-get` reports that none of these packages are installed.*
 
 ### Installing using the repository (1st of 3 methods)
 
