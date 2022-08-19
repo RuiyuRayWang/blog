@@ -154,6 +154,7 @@ if (!requireNamespace("remotes", quietly = TRUE)) {
 }
 remotes::install_github("mojaveazure/seurat-disk")
 install.packages("Seurat")
+BiocManager::install("scater")
 BiocManager::install("MAST")
 setRepositories(ind=1:3)
 install.packages("Signac")
@@ -177,8 +178,12 @@ install.packages('extrafont')
 BiocManager::install("DropletUtils")
 
 ## Decontamination
-BiocManager::install("celda")  ## DecontX: a bit difficult to build
+BiocManager::install("celda")  ## DecontX
+BiocManager::install("singleCellTK")  ## suggested by Decontx
 install.packages("SoupX")  ## SoupX
+
+## Doublet removal
+remotes::install_github('chris-mcginnis-ucsf/DoubletFinder')
 
 ## clusterProfiler
 BiocManager::install("clusterProfiler")
