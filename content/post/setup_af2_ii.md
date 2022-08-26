@@ -1800,6 +1800,11 @@ Confirm that venv is properly setup:
 /home/luolab/.virtualenvs/alphafold2/bin/python
 ```
 
+To leave the virtualenv, simply do:
+```
+(alphafold2) luolab@luolab-Z10PE-D16-WS:~/GITHUB_REPO/alphafold$ deactivate
+```
+
 Now install dependencies:
 ```
 (alphafold2) luolab@luolab-Z10PE-D16-WS:~/GITHUB_REPO/alphafold$ pip3 install -r docker/requirements.txt
